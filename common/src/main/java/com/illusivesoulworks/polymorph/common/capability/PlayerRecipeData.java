@@ -43,6 +43,8 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
     IPlayerRecipeData {
 
   private AbstractContainerMenu containerMenu;
+  private Recipe<?> cachedSelection;
+  private int lastAccessTick;
 
   public PlayerRecipeData(Player owner) {
     super(owner);
@@ -53,12 +55,26 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
                                                                           C inventory,
                                                                           Level level,
                                                                           List<T> recipesList) {
+
+    if (this.getOwner().tickCount == this.lastAccessTick) {
+
+      if (this.cachedSelection != null) {
+        this.setSelectedRecipe(this.cachedSelection);
+      }
+    } else {
+      this.cachedSelection = null;
+    }
     Optional<T> maybeRecipe = super.getRecipe(type, inventory, level, recipesList);
 
     if (this.getContainerMenu() == this.getOwner().containerMenu) {
       this.syncPlayerRecipeData();
     }
     this.setContainerMenu(null);
+
+    if (this.getOwner().tickCount != this.lastAccessTick) {
+      this.lastAccessTick = this.getOwner().tickCount;
+      this.cachedSelection = maybeRecipe.orElse(null);
+    }
     return maybeRecipe;
   }
 
