@@ -56,6 +56,9 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
                                                                           Level level,
                                                                           List<T> recipesList) {
 
+    // Workaround for crafting remainders where the recipe output is called once without it and then
+    // once with it, resulting in a cache needed for repeated access during the same tick to get the
+    // true final result, taking into consideration previous selections
     if (this.getOwner().tickCount == this.lastAccessTick) {
 
       if (this.cachedSelection != null) {
