@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to the format [MCVERSION-MAJORMOD.MAJORAPI.MINOR.PATCH](https://mcforge.readthedocs.io/en/1.15.x/conventions/versioning/).
 
+## [1.18.2-0.50] - 2024.03.29
+### Fixed
+- Fixed Applied Energistics 2 Pattern Encoding Terminal integration [#231](https://github.com/illusivesoulworks/polymorph/issues/231)
+- Fixed Refined Storage and Applied Energistics 2 button selection position when resizing the screen
+
 ## [1.18.2-0.49] - 2023.07.08
 ### Changed
 - Allow loading on JEI versions below 10 [#225](https://github.com/illusivesoulworks/polymorph/issues/225)
