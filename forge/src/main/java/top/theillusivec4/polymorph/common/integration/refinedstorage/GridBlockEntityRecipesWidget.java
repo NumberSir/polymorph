@@ -23,11 +23,15 @@ package top.theillusivec4.polymorph.common.integration.refinedstorage;
 
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.Slot;
+import top.theillusivec4.polymorph.api.client.base.ITickingRecipesWidget;
+import top.theillusivec4.polymorph.client.impl.PolymorphClient;
 import top.theillusivec4.polymorph.client.recipe.widget.PersistentRecipesWidget;
 
-public class GridBlockEntityRecipesWidget extends PersistentRecipesWidget {
+public class GridBlockEntityRecipesWidget extends PersistentRecipesWidget implements
+    ITickingRecipesWidget {
 
-  private final Slot outputSlot;
+  private Slot outputSlot;
+  private int lastContainerHeight;
 
   public GridBlockEntityRecipesWidget(AbstractContainerScreen<?> containerScreen, Slot outputSlot) {
     super(containerScreen);
@@ -37,5 +41,18 @@ public class GridBlockEntityRecipesWidget extends PersistentRecipesWidget {
   @Override
   public Slot getOutputSlot() {
     return this.outputSlot;
+  }
+
+  @Override
+  public void tick() {
+
+    if (this.containerScreen.getYSize() != this.lastContainerHeight) {
+      PolymorphClient.get().findCraftingResultSlot(this.containerScreen)
+          .ifPresent(slot -> {
+            this.outputSlot = slot;
+            this.resetWidgetOffsets();
+          });
+      this.lastContainerHeight = this.containerScreen.getYSize();
+    }
   }
 }

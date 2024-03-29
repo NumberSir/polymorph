@@ -22,18 +22,24 @@
 package top.theillusivec4.polymorph.common.integration.appliedenergistics2;
 
 import appeng.menu.me.items.PatternEncodingTermMenu;
+import appeng.menu.slot.CraftingTermSlot;
+import appeng.menu.slot.PatternTermSlot;
 import appeng.parts.encoding.EncodingMode;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.CraftingRecipe;
+import top.theillusivec4.polymorph.api.client.base.ITickingRecipesWidget;
+import top.theillusivec4.polymorph.client.impl.PolymorphClient;
 import top.theillusivec4.polymorph.client.recipe.widget.PlayerRecipesWidget;
 import top.theillusivec4.polymorph.mixin.integration.appliedenergistics2.AccessorPatternTermMenu;
 
-public class PatternTermRecipesWidget extends PlayerRecipesWidget {
+public class PatternTermRecipesWidget extends PlayerRecipesWidget implements ITickingRecipesWidget {
 
   private final PatternEncodingTermMenu container;
+  private int lastContainerHeight;
+  private Slot changeableOutputSlot;
 
   public PatternTermRecipesWidget(AbstractContainerScreen<?> containerScreen,
                                   PatternEncodingTermMenu container, Slot outputSlot) {
@@ -66,5 +72,22 @@ public class PatternTermRecipesWidget extends PlayerRecipesWidget {
       return false;
     }
     return super.mouseClicked(pMouseX, pMouseY, pButton);
+  }
+
+  @Override
+  public void tick() {
+
+    if (this.containerScreen.getYSize() != this.lastContainerHeight) {
+
+      for (Slot inventorySlot : this.containerScreen.getMenu().slots) {
+
+        if (inventorySlot instanceof PatternTermSlot patternTermSlot) {
+          this.changeableOutputSlot = patternTermSlot;
+          this.resetWidgetOffsets();
+          break;
+        }
+      }
+      this.lastContainerHeight = this.containerScreen.getYSize();
+    }
   }
 }
