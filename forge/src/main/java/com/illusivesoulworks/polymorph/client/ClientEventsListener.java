@@ -44,7 +44,7 @@ public class ClientEventsListener {
   }
 
   @SubscribeEvent
-  public void mouseClick(ScreenEvent.MouseButtonReleased.Pre evt) {
+  public void mouseClick(ScreenEvent.MouseButtonPressed.Pre evt) {
 
     if (PolymorphClientEvents.mouseClick(evt.getScreen(), evt.getMouseX(), evt.getMouseY(),
         evt.getButton())) {
