@@ -45,6 +45,7 @@ public class PatternTermRecipesWidget extends PlayerRecipesWidget implements ITi
                                   PatternEncodingTermMenu container, Slot outputSlot) {
     super(containerScreen, outputSlot);
     this.container = container;
+    this.changeableOutputSlot = outputSlot;
   }
 
   @Override
@@ -72,6 +73,11 @@ public class PatternTermRecipesWidget extends PlayerRecipesWidget implements ITi
       return false;
     }
     return super.mouseClicked(pMouseX, pMouseY, pButton);
+  }
+
+  @Override
+  public Slot getOutputSlot() {
+    return this.changeableOutputSlot;
   }
 
   @Override

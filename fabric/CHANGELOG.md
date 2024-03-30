@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.24-1.18.2] - 2024.03.29
+### Fixed
+- Fixed Applied Energistics 2 Pattern Encoding Terminal integration [#231](https://github.com/illusivesoulworks/polymorph/issues/231)
+- Fixed Applied Energistics 2 button selection position when resizing the screen
+
 ## [0.0.23-1.18.2] - 2023.06.30
 ### Fixed
 - Fixed recipe invalidating logic introduced in 0.0.22

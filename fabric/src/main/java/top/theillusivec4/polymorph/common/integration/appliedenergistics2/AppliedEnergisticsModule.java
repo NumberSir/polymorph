@@ -88,10 +88,13 @@ public class AppliedEnergisticsModule extends AbstractCompatibilityModule {
     if (pScreenHandler instanceof CraftingTermMenu) {
       ((AccessorCraftingTermContainer) pScreenHandler).callUpdateCurrentRecipeAndOutput(true);
       return true;
-    } else if (pScreenHandler instanceof PatternEncodingTermMenu) {
-      ((AccessorPatternTermContainer) pScreenHandler).callGetAndUpdateOutput();
-      return true;
     }
+    // Calling this better syncs the AE2 pattern encoder with the expected output upon re-opening,
+    // but causes networking issues: https://github.com/illusivesoulworks/polymorph/issues/231
+    // } else if (pScreenHandler instanceof PatternEncodingTermMenu) {
+    //   ((AccessorPatternTermContainer) pScreenHandler).callGetAndUpdateOutput();
+    //   return true;
+    // }
     return false;
   }
 }

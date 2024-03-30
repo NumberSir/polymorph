@@ -22,23 +22,29 @@
 package top.theillusivec4.polymorph.common.integration.appliedenergistics2;
 
 import appeng.menu.me.items.PatternEncodingTermMenu;
+import appeng.menu.slot.PatternTermSlot;
 import appeng.parts.encoding.EncodingMode;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
+import top.theillusivec4.polymorph.api.client.base.TickingRecipesWidget;
 import top.theillusivec4.polymorph.client.recipe.widget.PlayerRecipesWidget;
+import top.theillusivec4.polymorph.mixin.core.AccessorHandledScreen;
 import top.theillusivec4.polymorph.mixin.integration.appliedenergistics2.AccessorPatternTermContainer;
 
-public class PatternTermRecipesWidget extends PlayerRecipesWidget {
+public class PatternTermRecipesWidget extends PlayerRecipesWidget implements TickingRecipesWidget {
 
   private final PatternEncodingTermMenu container;
+  private int lastContainerHeight;
+  private Slot changeableOutputSlot;
 
   public PatternTermRecipesWidget(HandledScreen<?> containerScreen,
                                   PatternEncodingTermMenu container, Slot outputSlot) {
     super(containerScreen, outputSlot);
     this.container = container;
+    this.changeableOutputSlot = outputSlot;
   }
 
   @Override
@@ -67,5 +73,28 @@ public class PatternTermRecipesWidget extends PlayerRecipesWidget {
       return false;
     }
     return super.mouseClicked(pMouseX, pMouseY, pButton);
+  }
+
+  @Override
+  public Slot getOutputSlot() {
+    return this.changeableOutputSlot;
+  }
+
+  @Override
+  public void tick() {
+
+    if (((AccessorHandledScreen) this.handledScreen).getBackgroundHeight() !=
+        this.lastContainerHeight) {
+
+      for (Slot inventorySlot : this.handledScreen.getScreenHandler().slots) {
+
+        if (inventorySlot instanceof PatternTermSlot craftingTermSlot) {
+          this.changeableOutputSlot = craftingTermSlot;
+          this.resetWidgetOffsets();
+          break;
+        }
+      }
+      this.lastContainerHeight = ((AccessorHandledScreen) this.handledScreen).getBackgroundHeight();
+    }
   }
 }

@@ -30,4 +30,7 @@ public interface AccessorHandledScreen {
 
   @Accessor
   int getY();
+
+  @Accessor
+  int getBackgroundHeight();
 }
