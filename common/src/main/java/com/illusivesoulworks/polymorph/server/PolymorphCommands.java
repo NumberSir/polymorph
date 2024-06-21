@@ -44,10 +44,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 
@@ -93,10 +93,10 @@ public class PolymorphCommands {
     return Command.SINGLE_SUCCESS;
   }
 
-  private static <C extends Container, T extends Recipe<C>> int scanRecipes(RecipeType<T> pType,
-                                                                            List<String> pOutput,
-                                                                            RecipeManager pRecipeManager,
-                                                                            Function<RecipeHolder<?>, RecipeWrapper> pFactory) {
+  private static <I extends RecipeInput, T extends Recipe<I>> int scanRecipes(RecipeType<T> pType,
+                                                                              List<String> pOutput,
+                                                                              RecipeManager pRecipeManager,
+                                                                              Function<RecipeHolder<?>, RecipeWrapper> pFactory) {
     Collection<RecipeWrapper> recipes =
         pRecipeManager.getAllRecipesFor(pType).stream().map(pFactory).toList();
     List<Set<ResourceLocation>> conflicts = new ArrayList<>();

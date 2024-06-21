@@ -36,7 +36,7 @@ public record SPacketRecipesList(Optional<SortedSet<IRecipePair>> recipeList,
     implements CustomPacketPayload {
 
   public static final Type<SPacketRecipesList> TYPE =
-      new Type<>(new ResourceLocation(PolymorphApi.MOD_ID, "recipes_list"));
+      new Type<>(ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "recipes_list"));
 
   private static final StreamCodec<RegistryFriendlyByteBuf, SortedSet<IRecipePair>> SET_CODEC =
       new StreamCodec<>() {

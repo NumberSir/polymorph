@@ -27,7 +27,7 @@ import net.minecraft.resources.ResourceLocation;
 public record SPacketHighlightRecipe(ResourceLocation recipe) implements CustomPacketPayload {
 
   public static final Type<SPacketHighlightRecipe> TYPE =
-      new Type<>(new ResourceLocation(PolymorphApi.MOD_ID, "highlight_recipe"));
+      new Type<>(ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "highlight_recipe"));
   public static final StreamCodec<FriendlyByteBuf, SPacketHighlightRecipe> STREAM_CODEC =
       StreamCodec.composite(
           ResourceLocation.STREAM_CODEC,

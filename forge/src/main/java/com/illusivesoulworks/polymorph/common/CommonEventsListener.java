@@ -22,14 +22,12 @@ import com.illusivesoulworks.polymorph.api.common.capability.IBlockEntityRecipeD
 import com.illusivesoulworks.polymorph.api.common.capability.IPlayerRecipeData;
 import com.illusivesoulworks.polymorph.common.capability.PlayerRecipeData;
 import com.illusivesoulworks.polymorph.server.PolymorphCommands;
-import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -38,7 +36,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.common.util.LogicalSidedProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
@@ -47,7 +44,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 @SuppressWarnings("unused")
 public class CommonEventsListener {
@@ -113,12 +109,11 @@ public class CommonEventsListener {
       PlayerRecipeData data = new PlayerRecipeData((Player) entity);
       LazyOptional<IPlayerRecipeData> cap = LazyOptional.of(() -> data);
       evt.addCapability(PolymorphForgeCapabilities.PLAYER_RECIPE_DATA_ID,
-          new PlayerRecipeDataProvider(entity.level().registryAccess(), cap));
+          new PlayerRecipeDataProvider(cap));
     }
   }
 
-  private record PlayerRecipeDataProvider(HolderLookup.Provider provider,
-                                          LazyOptional<IPlayerRecipeData> capability)
+  private record PlayerRecipeDataProvider(LazyOptional<IPlayerRecipeData> capability)
       implements ICapabilitySerializable<Tag> {
 
     @Nonnull
@@ -140,16 +135,6 @@ public class CommonEventsListener {
       if (tag instanceof CompoundTag) {
         this.capability.ifPresent(recipeData -> recipeData.readNBT(provider, (CompoundTag) tag));
       }
-    }
-
-    @Override
-    public Tag serializeNBT() {
-      return this.serializeNBT(this.provider);
-    }
-
-    @Override
-    public void deserializeNBT(Tag nbt) {
-      this.deserializeNBT(this.provider, nbt);
     }
   }
 
@@ -176,29 +161,6 @@ public class CommonEventsListener {
 
       if (tag instanceof CompoundTag) {
         this.capability.ifPresent(recipeData -> recipeData.readNBT(provider, (CompoundTag) tag));
-      }
-    }
-
-    @Override
-    public Tag serializeNBT() {
-
-      if (this.blockEntity.hasLevel()) {
-        return this.serializeNBT(Objects.requireNonNull(blockEntity.getLevel()).registryAccess());
-      }
-      return new CompoundTag();
-    }
-
-    @Override
-    public void deserializeNBT(Tag nbt) {
-
-      if (this.blockEntity.hasLevel()) {
-        this.deserializeNBT(Objects.requireNonNull(blockEntity.getLevel()).registryAccess(), nbt);
-      } else {
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-
-        if (server != null) {
-          this.deserializeNBT(server.registryAccess(), nbt);
-        }
       }
     }
   }

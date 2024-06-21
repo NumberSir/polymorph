@@ -18,12 +18,11 @@
 package com.illusivesoulworks.polymorph.mixin.core;
 
 import com.illusivesoulworks.polymorph.common.crafting.RecipeSelection;
-import com.mojang.datafixers.util.Pair;
 import java.util.Optional;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
+import javax.annotation.Nullable;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -39,24 +38,10 @@ public class MixinRecipeManager {
 
   @Inject(
       at = @At("HEAD"),
-      method = "getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/Container;Lnet/minecraft/world/level/Level;Lnet/minecraft/resources/ResourceLocation;)Ljava/util/Optional;",
+      method = "getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/item/crafting/RecipeInput;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/crafting/RecipeHolder;)Ljava/util/Optional;",
       cancellable = true)
-  private <C extends Container, T extends Recipe<C>> void polymorph$getRecipe(
-      RecipeType<T> recipeType, C inventory, Level level, ResourceLocation resourceLocation,
-      CallbackInfoReturnable<Optional<RecipeHolder<T>>> cb) {
-
-    if (inventory instanceof BlockEntity) {
-      RecipeSelection.getBlockEntityRecipe(recipeType, inventory, level, (BlockEntity) inventory)
-          .ifPresent(recipe -> cb.setReturnValue(Optional.of(recipe)));
-    }
-  }
-
-  @Inject(
-      at = @At("HEAD"),
-      method = "getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/Container;Lnet/minecraft/world/level/Level;)Ljava/util/Optional;",
-      cancellable = true)
-  private <C extends Container, T extends Recipe<C>> void polymorph$getRecipe(
-      RecipeType<T> recipeType, C inventory, Level level,
+  private <I extends RecipeInput, T extends Recipe<I>> void polymorph$getRecipe(
+      RecipeType<T> recipeType, I inventory, Level level, @Nullable RecipeHolder<T> recipeHolder,
       CallbackInfoReturnable<Optional<RecipeHolder<T>>> cb) {
 
     if (inventory instanceof BlockEntity) {

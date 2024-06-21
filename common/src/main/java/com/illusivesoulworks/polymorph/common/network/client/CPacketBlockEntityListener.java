@@ -31,7 +31,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 public record CPacketBlockEntityListener(boolean add) implements CustomPacketPayload {
 
   public static final Type<CPacketBlockEntityListener> TYPE =
-      new Type<>(new ResourceLocation(PolymorphApi.MOD_ID, "block_entity_listener"));
+      new Type<>(ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "block_entity_listener"));
   public static final StreamCodec<FriendlyByteBuf, CPacketBlockEntityListener> STREAM_CODEC =
       StreamCodec.composite(
           ByteBufCodecs.BOOL,

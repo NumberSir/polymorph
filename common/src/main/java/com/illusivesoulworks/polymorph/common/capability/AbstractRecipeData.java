@@ -38,16 +38,15 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.LevelStorageSource;
 
 public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
 
@@ -69,9 +68,9 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends Recipe<C>, C extends Container> Optional<RecipeHolder<T>> getRecipe(
+  public <I extends RecipeInput, T extends Recipe<I>> Optional<RecipeHolder<T>> getRecipe(
       RecipeType<T> type,
-      C inventory, Level level,
+      I inventory, Level level,
       List<RecipeHolder<T>> recipesList) {
     boolean isEmpty = this.isEmpty(inventory);
     this.getLoadedRecipe().flatMap(id -> level.getRecipeManager().byKey(id))
@@ -118,7 +117,7 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
 
     if (result != null && !(this instanceof AbstractBlockEntityRecipeData)) {
       boolean inputChanged = false;
-      int size = inventory.getContainerSize();
+      int size = inventory.size();
       NonNullList<Item> currentInput = NonNullList.withSize(size, Items.AIR);
 
       if (size != this.input.size()) {
@@ -241,11 +240,11 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
   }
 
   @Override
-  public boolean isEmpty(Container inventory) {
+  public boolean isEmpty(RecipeInput inventory) {
 
     if (inventory != null) {
 
-      for (int i = 0; i < inventory.getContainerSize(); i++) {
+      for (int i = 0; i < inventory.size(); i++) {
 
         if (!inventory.getItem(i).isEmpty()) {
           return false;
@@ -298,7 +297,7 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
   public void readNBT(HolderLookup.Provider provider, CompoundTag compoundTag) {
 
     if (compoundTag.contains("SelectedRecipe")) {
-      this.loadedRecipe = new ResourceLocation(compoundTag.getString("SelectedRecipe"));
+      this.loadedRecipe = ResourceLocation.tryParse(compoundTag.getString("SelectedRecipe"));
     }
 
     if (compoundTag.contains("RecipeDataSet")) {

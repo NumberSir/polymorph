@@ -51,7 +51,7 @@ public class PolymorphForgeNetwork {
 
   public static void setup() {
     instance = ChannelBuilder
-        .named(new ResourceLocation(PolymorphApi.MOD_ID, "main"))
+        .named(ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "main"))
         .networkProtocolVersion(PTC_VERSION)
         .clientAcceptedVersions(Channel.VersionTest.exact(PTC_VERSION))
         .serverAcceptedVersions(Channel.VersionTest.exact(PTC_VERSION))

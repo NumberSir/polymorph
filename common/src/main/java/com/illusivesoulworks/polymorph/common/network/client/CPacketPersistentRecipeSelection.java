@@ -35,7 +35,7 @@ public record CPacketPersistentRecipeSelection(ResourceLocation recipe) implemen
     CustomPacketPayload {
 
   public static final Type<CPacketPersistentRecipeSelection> TYPE =
-      new Type<>(new ResourceLocation(PolymorphApi.MOD_ID, "persistent_recipe_selection"));
+      new Type<>(ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "persistent_recipe_selection"));
   public static final StreamCodec<FriendlyByteBuf, CPacketPersistentRecipeSelection> STREAM_CODEC =
       StreamCodec.composite(
           ResourceLocation.STREAM_CODEC,

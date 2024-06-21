@@ -30,6 +30,7 @@ import net.minecraft.world.inventory.SmithingMenu;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmithingRecipe;
+import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -46,6 +47,9 @@ public abstract class MixinSmithingMenu extends ItemCombinerMenu {
   @Shadow
   private RecipeHolder<SmithingRecipe> selectedRecipe;
 
+  @Shadow
+  protected abstract SmithingRecipeInput createRecipeInput();
+
   public MixinSmithingMenu(@Nullable MenuType<?> p_i231587_1_, int p_i231587_2_,
                            Inventory p_i231587_3_, ContainerLevelAccess p_i231587_4_) {
     super(p_i231587_1_, p_i231587_2_, p_i231587_3_, p_i231587_4_);
@@ -54,7 +58,7 @@ public abstract class MixinSmithingMenu extends ItemCombinerMenu {
   @ModifyVariable(
       at = @At(
           value = "INVOKE_ASSIGN",
-          target = "net/minecraft/world/item/crafting/RecipeManager.getRecipesFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/Container;Lnet/minecraft/world/level/Level;)Ljava/util/List;"),
+          target = "net/minecraft/world/item/crafting/RecipeManager.getRecipesFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/item/crafting/RecipeInput;Lnet/minecraft/world/level/Level;)Ljava/util/List;"),
       method = "createResult")
   private List<RecipeHolder<SmithingRecipe>> polymorph$getRecipes(
       List<RecipeHolder<SmithingRecipe>> recipes) {
@@ -77,7 +81,7 @@ public abstract class MixinSmithingMenu extends ItemCombinerMenu {
   private RecipeHolder<SmithingRecipe> polymorph$updateRepairOutput(
       RecipeHolder<SmithingRecipe> smithingRecipe) {
     return RecipeSelection.getPlayerRecipe((SmithingMenu) (Object) this, RecipeType.SMITHING,
-            this.inputSlots, this.player.level(), this.player, this.polymorph$matchingRecipes)
+            this.createRecipeInput(), this.player.level(), this.player, this.polymorph$matchingRecipes)
         .orElse(smithingRecipe);
   }
 }

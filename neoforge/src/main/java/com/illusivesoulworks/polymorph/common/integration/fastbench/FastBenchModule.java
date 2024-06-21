@@ -21,36 +21,36 @@ public class FastBenchModule extends AbstractCompatibilityModule {
   @Override
   public boolean selectRecipe(AbstractContainerMenu container, RecipeHolder<?> recipe) {
 
-    if (recipe.value() instanceof CraftingRecipe craftingRecipe) {
-      CraftingContainer inv = null;
-      ResultContainer result = null;
-      Player player = null;
-
-      if (container instanceof CraftingMenu) {
-        AccessorCraftingMenu accessor = (AccessorCraftingMenu) container;
-        inv = accessor.getCraftSlots();
-        result = accessor.getResultSlots();
-        player = accessor.getPlayer();
-      } else if (container instanceof InventoryMenu) {
-        AccessorInventoryMenu accessor = (AccessorInventoryMenu) container;
-        inv = accessor.getCraftSlots();
-        result = accessor.getResultSlots();
-        player = accessor.getOwner();
-      }
-
-      if (inv != null && result != null && player != null) {
-        ItemStack stack = craftingRecipe.assemble(inv, player.level().registryAccess());
-
-        // Some mods seem to be violating the non-null contract so this check is necessary
-        // https://github.com/TheIllusiveC4/Polymorph/issues/163
-        // noinspection ConstantConditions
-        if (stack != null && !ItemStack.matches(stack, result.getItem(0))) {
-          PacketDistro.sendTo(new RecipeMessage((RecipeHolder<CraftingRecipe>) recipe, stack), player);
-          result.setItem(0, stack);
-          result.setRecipeUsed(recipe);
-        }
-      }
-    }
+//    if (recipe.value() instanceof CraftingRecipe craftingRecipe) {
+//      CraftingContainer inv = null;
+//      ResultContainer result = null;
+//      Player player = null;
+//
+//      if (container instanceof CraftingMenu) {
+//        AccessorCraftingMenu accessor = (AccessorCraftingMenu) container;
+//        inv = accessor.getCraftSlots();
+//        result = accessor.getResultSlots();
+//        player = accessor.getPlayer();
+//      } else if (container instanceof InventoryMenu) {
+//        AccessorInventoryMenu accessor = (AccessorInventoryMenu) container;
+//        inv = accessor.getCraftSlots();
+//        result = accessor.getResultSlots();
+//        player = accessor.getOwner();
+//      }
+//
+//      if (inv != null && result != null && player != null) {
+//        ItemStack stack = craftingRecipe.assemble(inv, player.level().registryAccess());
+//
+//        // Some mods seem to be violating the non-null contract so this check is necessary
+//        // https://github.com/TheIllusiveC4/Polymorph/issues/163
+//        // noinspection ConstantConditions
+//        if (stack != null && !ItemStack.matches(stack, result.getItem(0))) {
+//          PacketDistro.sendTo(new RecipeMessage((RecipeHolder<CraftingRecipe>) recipe, stack), player);
+//          result.setItem(0, stack);
+//          result.setRecipeUsed(recipe);
+//        }
+//      }
+//    }
     return false;
   }
 }

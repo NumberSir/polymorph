@@ -29,10 +29,10 @@ import java.util.UUID;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public abstract class AbstractBlockEntityRecipeData<E extends BlockEntity>
@@ -127,7 +127,7 @@ public abstract class AbstractBlockEntityRecipeData<E extends BlockEntity>
   }
 
   @Override
-  public boolean isEmpty(Container inventory) {
+  public boolean isEmpty(RecipeInput inventory) {
     return this.isEmpty();
   }
 }

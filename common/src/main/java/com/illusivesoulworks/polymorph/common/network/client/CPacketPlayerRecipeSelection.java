@@ -31,7 +31,7 @@ import net.minecraft.world.inventory.ItemCombinerMenu;
 public record CPacketPlayerRecipeSelection(ResourceLocation recipe) implements CustomPacketPayload {
 
   public static final Type<CPacketPlayerRecipeSelection> TYPE =
-      new Type<>(new ResourceLocation(PolymorphApi.MOD_ID, "player_recipe_selection"));
+      new Type<>(ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "player_recipe_selection"));
   public static final StreamCodec<FriendlyByteBuf, CPacketPlayerRecipeSelection> STREAM_CODEC =
       StreamCodec.composite(
           ResourceLocation.STREAM_CODEC,

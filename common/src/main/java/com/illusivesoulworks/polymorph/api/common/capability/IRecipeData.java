@@ -31,14 +31,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 public interface IRecipeData<E> {
 
-  <T extends Recipe<C>, C extends Container> Optional<RecipeHolder<T>> getRecipe(RecipeType<T> type, C inventory,
-                                                                   Level level,
-                                                                   List<RecipeHolder<T>> recipes);
+  <I extends RecipeInput, T extends Recipe<I>> Optional<RecipeHolder<T>> getRecipe(RecipeType<T> type,
+                                                                                   I inventory,
+                                                                                   Level level,
+                                                                                   List<RecipeHolder<T>> recipes);
 
   void selectRecipe(@Nonnull RecipeHolder<?> recipe);
 
@@ -51,7 +53,7 @@ public interface IRecipeData<E> {
 
   void setRecipesList(@Nonnull SortedSet<IRecipePair> recipesList);
 
-  boolean isEmpty(Container container);
+  boolean isEmpty(RecipeInput container);
 
   Set<ServerPlayer> getListeners();
 

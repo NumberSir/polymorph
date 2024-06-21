@@ -19,14 +19,15 @@ package com.illusivesoulworks.polymorph.mixin.core;
 
 import com.illusivesoulworks.polymorph.common.crafting.RecipeSelection;
 import java.util.Optional;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -41,12 +42,13 @@ public class MixinCraftingMenu {
   @Redirect(
       at = @At(
           value = "INVOKE",
-          target = "net/minecraft/world/item/crafting/RecipeManager.getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/Container;Lnet/minecraft/world/level/Level;)Ljava/util/Optional;"),
+          target = "net/minecraft/world/item/crafting/RecipeManager.getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/item/crafting/RecipeInput;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/crafting/RecipeHolder;)Ljava/util/Optional;"),
       method = "slotChangedCraftingGrid")
-  private static <C extends Container, T extends Recipe<C>> Optional<RecipeHolder<T>> polymorph$getRecipe(
-      RecipeManager recipeManager, RecipeType<T> type, C inventory, Level world,
-      AbstractContainerMenu p_150547_, Level p_150548_, Player player,
-      CraftingContainer p_150550_, ResultContainer p_150551_) {
-    return RecipeSelection.getPlayerRecipe(p_150547_, type, inventory, world, player);
+  private static <I extends RecipeInput, T extends Recipe<I>> Optional<RecipeHolder<T>> polymorph$getRecipe(
+      RecipeManager recipeManager, RecipeType<T> type, I craftingInput, Level world,
+      RecipeHolder<CraftingRecipe> recipeHolder, AbstractContainerMenu menu, Level unused,
+      Player player, CraftingContainer craftingContainer, ResultContainer resultContainer,
+      RecipeHolder<CraftingRecipe> unused1) {
+    return RecipeSelection.getPlayerRecipe(menu, type, craftingInput, world, player);
   }
 }

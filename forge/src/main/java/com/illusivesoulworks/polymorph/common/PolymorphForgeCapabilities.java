@@ -35,7 +35,7 @@ public class PolymorphForgeCapabilities {
       });
 
   public static final ResourceLocation PLAYER_RECIPE_DATA_ID =
-      new ResourceLocation(PolymorphApi.MOD_ID, "player_recipe_data");
+      ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "player_recipe_data");
   public static final ResourceLocation BLOCK_ENTITY_RECIPE_DATA_ID =
-      new ResourceLocation(PolymorphApi.MOD_ID, "block_entity_recipe_data");
+      ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "block_entity_recipe_data");
 }
