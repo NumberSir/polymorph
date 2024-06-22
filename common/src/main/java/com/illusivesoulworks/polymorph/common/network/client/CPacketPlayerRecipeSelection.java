@@ -48,6 +48,8 @@ public record CPacketPlayerRecipeSelection(ResourceLocation recipe) implements C
 
       if (container instanceof ItemCombinerMenu) {
         ((ItemCombinerMenu) container).createResult();
+        ((ItemCombinerMenu) container).broadcastChanges();
+        PolymorphApi.common().getPacketDistributor().sendUpdatePreviewS2C(player);
       }
     });
   }

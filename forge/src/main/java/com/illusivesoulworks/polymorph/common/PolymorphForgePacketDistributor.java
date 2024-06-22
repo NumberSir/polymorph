@@ -25,6 +25,7 @@ import com.illusivesoulworks.polymorph.common.network.client.CPacketPlayerRecipe
 import com.illusivesoulworks.polymorph.common.network.server.SPacketHighlightRecipe;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketPlayerRecipeSync;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketRecipesList;
+import com.illusivesoulworks.polymorph.common.network.server.SPacketUpdatePreview;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.SortedSet;
@@ -93,5 +94,11 @@ public class PolymorphForgePacketDistributor implements IPolymorphPacketDistribu
   public void sendBlockEntityListenerC2S(boolean add) {
     PolymorphForgeNetwork.get()
         .send(new CPacketBlockEntityListener(add), PacketDistributor.SERVER.noArg());
+  }
+
+  @Override
+  public void sendUpdatePreviewS2C(ServerPlayer player) {
+    PolymorphForgeNetwork.get()
+        .send(new SPacketUpdatePreview(), PacketDistributor.PLAYER.with(player));
   }
 }

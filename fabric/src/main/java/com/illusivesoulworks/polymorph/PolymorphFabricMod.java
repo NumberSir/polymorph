@@ -25,6 +25,7 @@ import com.illusivesoulworks.polymorph.common.network.client.CPacketPlayerRecipe
 import com.illusivesoulworks.polymorph.common.network.server.SPacketHighlightRecipe;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketPlayerRecipeSync;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketRecipesList;
+import com.illusivesoulworks.polymorph.common.network.server.SPacketUpdatePreview;
 import com.illusivesoulworks.polymorph.server.PolymorphCommands;
 import java.util.function.BiConsumer;
 import net.fabricmc.api.ModInitializer;
@@ -61,6 +62,8 @@ public class PolymorphFabricMod implements ModInitializer {
         .register(SPacketPlayerRecipeSync.TYPE, SPacketPlayerRecipeSync.STREAM_CODEC);
     PayloadTypeRegistry.playS2C()
         .register(SPacketRecipesList.TYPE, SPacketRecipesList.STREAM_CODEC);
+    PayloadTypeRegistry.playS2C()
+        .register(SPacketUpdatePreview.TYPE, SPacketUpdatePreview.STREAM_CODEC);
 
     registerServerReceiver(CPacketPlayerRecipeSelection.TYPE, CPacketPlayerRecipeSelection::handle);
     registerServerReceiver(CPacketPersistentRecipeSelection.TYPE,

@@ -21,12 +21,13 @@ import com.illusivesoulworks.polymorph.api.PolymorphApi;
 import com.illusivesoulworks.polymorph.api.client.base.IRecipesWidget;
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
 import com.illusivesoulworks.polymorph.client.recipe.RecipesWidget;
+import com.illusivesoulworks.polymorph.mixin.core.AccessorSmithingScreen;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.inventory.SmithingScreen;
 import net.minecraft.client.player.LocalPlayer;
 
 public class ClientPacketHandler {
@@ -69,5 +70,14 @@ public class ClientPacketHandler {
 
   private static SortedSet<IRecipePair> sort(HashSet<IRecipePair> set) {
     return new TreeSet<>(set);
+  }
+
+  public static void handle(SPacketUpdatePreview packet) {
+    Minecraft mc = Minecraft.getInstance();
+
+    if (mc.screen instanceof SmithingScreen smithingScreen) {
+      ((AccessorSmithingScreen) smithingScreen).callUpdateArmorStandPreview(
+          smithingScreen.getMenu().getSlot(3).getItem());
+    }
   }
 }

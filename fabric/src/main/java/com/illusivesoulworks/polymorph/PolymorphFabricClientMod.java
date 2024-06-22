@@ -21,6 +21,7 @@ import com.illusivesoulworks.polymorph.client.ClientEventsListener;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketHighlightRecipe;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketPlayerRecipeSync;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketRecipesList;
+import com.illusivesoulworks.polymorph.common.network.server.SPacketUpdatePreview;
 import java.util.function.Consumer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -37,6 +38,7 @@ public class PolymorphFabricClientMod implements ClientModInitializer {
     registerClientReceiver(SPacketHighlightRecipe.TYPE, SPacketHighlightRecipe::handle);
     registerClientReceiver(SPacketPlayerRecipeSync.TYPE, SPacketPlayerRecipeSync::handle);
     registerClientReceiver(SPacketRecipesList.TYPE, SPacketRecipesList::handle);
+    registerClientReceiver(SPacketUpdatePreview.TYPE, SPacketUpdatePreview::handle);
   }
 
   private static <M extends CustomPacketPayload> void registerClientReceiver(

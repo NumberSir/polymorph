@@ -41,4 +41,6 @@ public interface IPolymorphPacketDistributor {
                          ResourceLocation selected);
 
   void sendBlockEntityListenerC2S(boolean add);
+
+  void sendUpdatePreviewS2C(ServerPlayer player);
 }

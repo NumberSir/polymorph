@@ -24,6 +24,7 @@ import com.illusivesoulworks.polymorph.common.network.client.CPacketPlayerRecipe
 import com.illusivesoulworks.polymorph.common.network.server.SPacketHighlightRecipe;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketPlayerRecipeSync;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketRecipesList;
+import com.illusivesoulworks.polymorph.common.network.server.SPacketUpdatePreview;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -64,6 +65,8 @@ public class PolymorphForgeNetwork {
         SPacketHighlightRecipe.STREAM_CODEC::decode, SPacketHighlightRecipe::handle);
     registerS2CPlay(SPacketPlayerRecipeSync.class, SPacketPlayerRecipeSync.STREAM_CODEC::encode,
         SPacketPlayerRecipeSync.STREAM_CODEC::decode, SPacketPlayerRecipeSync::handle);
+    registerS2CPlay(SPacketUpdatePreview.class, SPacketUpdatePreview.STREAM_CODEC::encode,
+        SPacketUpdatePreview.STREAM_CODEC::decode, SPacketUpdatePreview::handle);
 
     // Client-to-Server
     registerC2S(CPacketPlayerRecipeSelection.class,
