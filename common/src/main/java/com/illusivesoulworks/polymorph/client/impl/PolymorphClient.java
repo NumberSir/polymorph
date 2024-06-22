@@ -19,6 +19,7 @@ package com.illusivesoulworks.polymorph.client.impl;
 
 import com.illusivesoulworks.polymorph.api.client.base.IPolymorphClient;
 import com.illusivesoulworks.polymorph.api.client.base.IRecipesWidget;
+import com.illusivesoulworks.polymorph.client.recipe.widget.CrafterRecipesWidget;
 import com.illusivesoulworks.polymorph.client.recipe.widget.FurnaceRecipesWidget;
 import com.illusivesoulworks.polymorph.client.recipe.widget.PlayerRecipesWidget;
 import java.util.LinkedList;
@@ -27,6 +28,7 @@ import java.util.Optional;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
+import net.minecraft.world.inventory.CrafterMenu;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.SmithingMenu;
@@ -45,12 +47,13 @@ public class PolymorphClient implements IPolymorphClient {
     get().registerWidget(containerScreen -> {
       AbstractContainerMenu container = containerScreen.getMenu();
 
-      if (container instanceof SmithingMenu) {
-        return new PlayerRecipesWidget(containerScreen, container.slots.get(3));
-      } else if (container instanceof AbstractFurnaceMenu) {
-        return new FurnaceRecipesWidget(containerScreen);
-      }
-      return null;
+      return switch (container) {
+        case SmithingMenu smithingMenu ->
+            new PlayerRecipesWidget(containerScreen, container.slots.get(3));
+        case AbstractFurnaceMenu abstractFurnaceMenu -> new FurnaceRecipesWidget(containerScreen);
+        case CrafterMenu crafterMenu -> new CrafterRecipesWidget(containerScreen);
+        default -> null;
+      };
     });
   }
 

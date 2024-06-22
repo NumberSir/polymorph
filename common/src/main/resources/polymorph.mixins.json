@@ -5,14 +5,18 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AccessorAbstractFurnaceBlockEntity",
+    "AccessorCrafterMenu",
     "AccessorCraftingMenu",
     "AccessorInventoryMenu",
     "AccessorSmithingTransformRecipe",
     "AccessorSmithingTrimRecipe",
+    "MixinCrafterMenu",
     "MixinCraftingMenu",
     "MixinLevelChunk",
     "MixinPolymorphApi",
+    "MixinRecipeCache",
     "MixinRecipeManager",
+    "MixinServerLevel",
     "MixinSmithingMenu"
   ],
   "injectors": {

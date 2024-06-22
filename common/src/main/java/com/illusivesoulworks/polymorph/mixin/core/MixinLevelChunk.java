@@ -37,8 +37,7 @@ public class MixinLevelChunk<T extends BlockEntity> {
       at = @At(
           value = "INVOKE",
           target = "net/minecraft/world/level/block/entity/BlockEntityTicker.tick(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/BlockEntity;)V",
-          shift = At.Shift.BY,
-          by = 1
+          shift = At.Shift.AFTER
       ),
       method = "tick"
   )
