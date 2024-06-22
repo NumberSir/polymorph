@@ -10,6 +10,7 @@
     "AccessorSmithingTransformRecipe",
     "AccessorSmithingTrimRecipe",
     "MixinCraftingMenu",
+    "MixinLevelChunk",
     "MixinPolymorphApi",
     "MixinRecipeManager",
     "MixinSmithingMenu"

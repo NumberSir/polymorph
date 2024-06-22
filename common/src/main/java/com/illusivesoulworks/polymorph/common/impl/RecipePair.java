@@ -18,15 +18,24 @@
 package com.illusivesoulworks.polymorph.common.impl;
 
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import net.minecraft.core.component.TypedDataComponent;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 public record RecipePair(ResourceLocation resourceLocation,
                          ItemStack output) implements IRecipePair {
+
+  public static final StreamCodec<RegistryFriendlyByteBuf, IRecipePair> STREAM_CODEC =
+      StreamCodec.composite(
+          ResourceLocation.STREAM_CODEC,
+          IRecipePair::getResourceLocation,
+          ItemStack.STREAM_CODEC,
+          IRecipePair::getOutput,
+          RecipePair::new);
 
   @Override
   public ItemStack getOutput() {
@@ -48,8 +57,10 @@ public record RecipePair(ResourceLocation resourceLocation,
       int diff = output1.getCount() - output2.getCount();
 
       if (diff == 0) {
-        String tag1 = output1.getComponents().stream().map(TypedDataComponent::toString).collect(Collectors.joining());
-        String tag2 = output2.getComponents().stream().map(TypedDataComponent::toString).collect(Collectors.joining());
+        String tag1 = output1.getComponents().stream().map(TypedDataComponent::toString)
+            .collect(Collectors.joining());
+        String tag2 = output2.getComponents().stream().map(TypedDataComponent::toString)
+            .collect(Collectors.joining());
         return tag1.compareTo(tag2);
       } else {
         return diff;

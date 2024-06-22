@@ -17,6 +17,7 @@
 
 package com.illusivesoulworks.polymorph.mixin.core;
 
+import com.illusivesoulworks.polymorph.api.common.base.IRecipeContext;
 import com.illusivesoulworks.polymorph.common.crafting.RecipeSelection;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -28,13 +29,17 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("unused")
 @Mixin(value = RecipeManager.class, priority = 900)
-public class MixinRecipeManager {
+public class MixinRecipeManager implements IRecipeContext {
+
+  @Unique
+  Object polymorph$context;
 
   @Inject(
       at = @At("HEAD"),
@@ -44,9 +49,20 @@ public class MixinRecipeManager {
       RecipeType<T> recipeType, I inventory, Level level, @Nullable RecipeHolder<T> recipeHolder,
       CallbackInfoReturnable<Optional<RecipeHolder<T>>> cb) {
 
-    if (inventory instanceof BlockEntity) {
-      RecipeSelection.getBlockEntityRecipe(recipeType, inventory, level, (BlockEntity) inventory)
+    if (this.polymorph$getContext() instanceof BlockEntity blockEntity) {
+      RecipeSelection.getBlockEntityRecipe(recipeType, inventory, level, blockEntity)
           .ifPresent(recipe -> cb.setReturnValue(Optional.of(recipe)));
     }
+  }
+
+  @Nullable
+  @Override
+  public Object polymorph$getContext() {
+    return this.polymorph$context;
+  }
+
+  @Override
+  public void polymorph$setContext(Object context) {
+    this.polymorph$context = context;
   }
 }

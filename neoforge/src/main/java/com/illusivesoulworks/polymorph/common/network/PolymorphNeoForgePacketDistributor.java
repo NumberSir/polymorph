@@ -25,6 +25,7 @@ import com.illusivesoulworks.polymorph.common.network.client.CPacketPlayerRecipe
 import com.illusivesoulworks.polymorph.common.network.server.SPacketHighlightRecipe;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketPlayerRecipeSync;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketRecipesList;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.SortedSet;
 import net.minecraft.resources.ResourceLocation;
@@ -56,8 +57,13 @@ public class PolymorphNeoForgePacketDistributor implements IPolymorphPacketDistr
   @Override
   public void sendRecipesListS2C(ServerPlayer player, SortedSet<IRecipePair> recipesList,
                                  ResourceLocation selected) {
+    HashSet<IRecipePair> set = null;
+
+    if (recipesList != null) {
+      set = new HashSet<>(recipesList);
+    }
     PacketDistributor.sendToPlayer(player,
-        new SPacketRecipesList(Optional.ofNullable(recipesList), Optional.ofNullable(selected)));
+        new SPacketRecipesList(Optional.ofNullable(set), Optional.ofNullable(selected)));
   }
 
   @Override
@@ -68,9 +74,13 @@ public class PolymorphNeoForgePacketDistributor implements IPolymorphPacketDistr
   @Override
   public void sendPlayerSyncS2C(ServerPlayer player, SortedSet<IRecipePair> recipesList,
                                 ResourceLocation selected) {
+    HashSet<IRecipePair> set = null;
+
+    if (recipesList != null) {
+      set = new HashSet<>(recipesList);
+    }
     PacketDistributor.sendToPlayer(player,
-        new SPacketPlayerRecipeSync(Optional.ofNullable(recipesList),
-            Optional.ofNullable(selected)));
+        new SPacketPlayerRecipeSync(Optional.ofNullable(set), Optional.ofNullable(selected)));
   }
 
   @Override
