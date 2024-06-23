@@ -52,6 +52,7 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
 
   private final SortedSet<IRecipePair> recipesList;
   private final E owner;
+  private final RecipeCache recipeCache;
 
   private RecipeHolder<?> lastRecipe;
   private RecipeHolder<?> selectedRecipe;
@@ -64,14 +65,13 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
     this.recipesList = new TreeSet<>();
     this.owner = owner;
     this.input = NonNullList.create();
+    this.recipeCache = new RecipeCache(10);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public <I extends RecipeInput, T extends Recipe<I>> Optional<RecipeHolder<T>> getRecipe(
-      RecipeType<T> type,
-      I inventory, Level level,
-      List<RecipeHolder<T>> recipesList) {
+      RecipeType<T> type, I inventory, Level level, List<RecipeHolder<T>> recipesList) {
     boolean isEmpty = this.isEmpty(inventory);
     this.getLoadedRecipe().flatMap(id -> level.getRecipeManager().byKey(id))
         .ifPresent(selected -> {
@@ -81,8 +81,8 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
               this.setSelectedRecipe(selected);
             }
           } catch (ClassCastException e) {
-            PolymorphConstants.LOG.error("Recipe {} does not match inventory {}", selected.id(),
-                inventory);
+            PolymorphConstants.LOG.error("Loaded recipe {} does not match inventory {}",
+                selected.id(), inventory);
           }
           this.loadedRecipe = null;
         });
@@ -103,13 +103,13 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
                 ref.set((RecipeHolder<T>) selected);
               }
             } catch (ClassCastException e) {
-              PolymorphConstants.LOG.error("Recipe {} does not match inventory {}", selected.id(),
-                  inventory);
+              PolymorphConstants.LOG.error("Selected recipe {} does not match inventory {}",
+                  selected.id(), inventory);
             }
           });
         }
       } catch (ClassCastException e) {
-        PolymorphConstants.LOG.error("Recipe {} does not match inventory {}", recipe.id(),
+        PolymorphConstants.LOG.error("Last recipe {} does not match inventory {}", recipe.id(),
             inventory);
       }
     });
@@ -146,8 +146,7 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
     }
     SortedSet<IRecipePair> newDataset = new TreeSet<>();
     List<RecipeHolder<T>> recipes =
-        recipesList.isEmpty() ? level.getRecipeManager().getRecipesFor(type, inventory, level) :
-            recipesList;
+        recipesList.isEmpty() ? this.recipeCache.get(level, type, inventory) : recipesList;
 
     if (recipes.isEmpty()) {
       this.setFailing(true);
@@ -241,17 +240,7 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
 
   @Override
   public boolean isEmpty(RecipeInput inventory) {
-
-    if (inventory != null) {
-
-      for (int i = 0; i < inventory.size(); i++) {
-
-        if (!inventory.getItem(i).isEmpty()) {
-          return false;
-        }
-      }
-    }
-    return true;
+    return inventory.isEmpty();
   }
 
   @Override

@@ -28,7 +28,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -37,10 +36,8 @@ import net.minecraft.world.level.Level;
 
 public interface IRecipeData<E> {
 
-  <I extends RecipeInput, T extends Recipe<I>> Optional<RecipeHolder<T>> getRecipe(RecipeType<T> type,
-                                                                                   I inventory,
-                                                                                   Level level,
-                                                                                   List<RecipeHolder<T>> recipes);
+  <I extends RecipeInput, T extends Recipe<I>> Optional<RecipeHolder<T>> getRecipe(
+      RecipeType<T> type, I inventory, Level level, List<RecipeHolder<T>> recipes);
 
   void selectRecipe(@Nonnull RecipeHolder<?> recipe);
 
