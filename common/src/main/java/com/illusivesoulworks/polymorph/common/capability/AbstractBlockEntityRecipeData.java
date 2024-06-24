@@ -57,6 +57,19 @@ public abstract class AbstractBlockEntityRecipeData<E extends BlockEntity>
     this.wasEmptyBefore = isEmpty;
   }
 
+  @Override
+  public boolean isEmpty() {
+    NonNullList<ItemStack> currentInput = this.getInput();
+
+    for (ItemStack currentStack : currentInput) {
+
+      if (!currentStack.isEmpty()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   @SuppressWarnings("unchecked")
   @Override
   public E getOwner() {
