@@ -27,11 +27,13 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 public record CPacketBlockEntityListener(boolean add) implements CustomPacketPayload {
 
   public static final Type<CPacketBlockEntityListener> TYPE =
-      new Type<>(ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "block_entity_listener"));
+      new Type<>(
+          ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "block_entity_listener"));
   public static final StreamCodec<FriendlyByteBuf, CPacketBlockEntityListener> STREAM_CODEC =
       StreamCodec.composite(
           ByteBufCodecs.BOOL,
@@ -45,7 +47,17 @@ public record CPacketBlockEntityListener(boolean add) implements CustomPacketPay
       if (packet.add) {
         AbstractContainerMenu container = player.containerMenu;
         PolymorphApi.common().getRecipeDataFromBlockEntity(container)
-            .ifPresent(recipeData -> BlockEntityTicker.add(player, recipeData));
+            .ifPresent(recipeData -> {
+              BlockEntityTicker.add(player, recipeData);
+              ResourceLocation resourceLocation = null;
+              RecipeHolder<?> recipeHolder = recipeData.getSelectedRecipe();
+
+              if (recipeHolder != null) {
+                resourceLocation = recipeHolder.id();
+              }
+              PolymorphApi.common().getPacketDistributor()
+                  .sendRecipesListS2C(player, recipeData.getRecipesList(), resourceLocation);
+            });
       } else {
         BlockEntityTicker.remove(player);
       }

@@ -22,7 +22,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 
-public class FurnaceRecipeData extends AbstractHighlightedRecipeData<AbstractFurnaceBlockEntity> {
+public class FurnaceRecipeData extends AbstractBlockEntityRecipeData<AbstractFurnaceBlockEntity> {
 
   public FurnaceRecipeData(AbstractFurnaceBlockEntity owner) {
     super(owner);
@@ -36,10 +36,5 @@ public class FurnaceRecipeData extends AbstractHighlightedRecipeData<AbstractFur
     } else {
       return NonNullList.create();
     }
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return this.getInput().getFirst().isEmpty();
   }
 }

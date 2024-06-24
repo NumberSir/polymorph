@@ -22,13 +22,8 @@ import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
 import com.illusivesoulworks.polymorph.api.common.capability.IPlayerRecipeData;
 import com.illusivesoulworks.polymorph.client.recipe.RecipesWidget;
 import com.mojang.datafixers.util.Pair;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -52,10 +47,8 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
   }
 
   @Override
-  public <I extends RecipeInput, T extends Recipe<I>> Optional<RecipeHolder<T>> getRecipe(
-      RecipeType<T> type,
-      I inventory, Level level,
-      List<RecipeHolder<T>> recipesList) {
+  public <I extends RecipeInput, T extends Recipe<I>> RecipeHolder<T> getRecipe(
+      RecipeType<T> type, I recipeInput, Level level, List<RecipeHolder<T>> recipesList) {
 
     // Workaround for crafting remainders where the recipe output is called once without it and then
     // once with it, resulting in a cache needed for repeated access during the same tick to get the
@@ -68,7 +61,7 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
     } else {
       this.cachedSelection = null;
     }
-    Optional<RecipeHolder<T>> maybeRecipe = super.getRecipe(type, inventory, level, recipesList);
+    RecipeHolder<T> result = super.getRecipe(type, recipeInput, level, recipesList);
 
     if (this.getContainerMenu() == this.getOwner().containerMenu) {
       this.syncPlayerRecipeData();
@@ -77,9 +70,9 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
 
     if (this.getOwner().tickCount != this.lastAccessTick) {
       this.lastAccessTick = this.getOwner().tickCount;
-      this.cachedSelection = maybeRecipe.orElse(null);
+      this.cachedSelection = result;
     }
-    return maybeRecipe;
+    return result;
   }
 
   @Override
@@ -91,18 +84,22 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
   private void syncPlayerRecipeData() {
 
     if (this.getOwner() instanceof ServerPlayer) {
+      ResourceLocation resourceLocation =
+          this.getSelectedRecipe() != null ? this.getSelectedRecipe().id() : null;
       PolymorphApi.common().getPacketDistributor()
           .sendPlayerSyncS2C((ServerPlayer) this.getOwner(), this.getRecipesList(),
-              this.getSelectedRecipe().map(RecipeHolder::id).orElse(null));
+              resourceLocation);
     }
   }
 
   @Override
-  public void sendRecipesListToListeners(boolean isEmpty) {
+  public void sendRecipesListToListeners() {
 
     if (this.getContainerMenu() == this.getOwner().containerMenu) {
+      ResourceLocation resourceLocation =
+          this.getSelectedRecipe() != null ? this.getSelectedRecipe().id() : null;
       Pair<SortedSet<IRecipePair>, ResourceLocation> packetData =
-          isEmpty ? new Pair<>(new TreeSet<>(), null) : this.getPacketData();
+          new Pair<>(this.getRecipesList(), resourceLocation);
       Player player = this.getOwner();
 
       if (player.level().isClientSide()) {
@@ -113,17 +110,6 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
             .sendRecipesListS2C((ServerPlayer) player, packetData.getFirst(),
                 packetData.getSecond());
       }
-    }
-  }
-
-  @Override
-  public Set<ServerPlayer> getListeners() {
-    Player player = this.getOwner();
-
-    if (player instanceof ServerPlayer) {
-      return Collections.singleton((ServerPlayer) player);
-    } else {
-      return new HashSet<>();
     }
   }
 

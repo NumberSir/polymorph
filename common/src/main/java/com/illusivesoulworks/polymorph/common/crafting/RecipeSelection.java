@@ -89,7 +89,8 @@ public class RecipeSelection {
       List<RecipeHolder<T>> recipes) {
 
     if (pOpt.isPresent()) {
-      return pOpt.flatMap(recipeData -> recipeData.getRecipe(type, inventory, level, recipes));
+      return pOpt.flatMap(
+          recipeData -> Optional.ofNullable(recipeData.getRecipe(type, inventory, level, recipes)));
     } else {
       return level.getRecipeManager().getRecipesFor(type, inventory, level).stream()
           .findFirst();

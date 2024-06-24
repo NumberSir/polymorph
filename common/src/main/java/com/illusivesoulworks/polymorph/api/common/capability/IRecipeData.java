@@ -18,15 +18,12 @@
 package com.illusivesoulworks.polymorph.api.common.capability;
 
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
-import com.mojang.datafixers.util.Pair;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -36,33 +33,32 @@ import net.minecraft.world.level.Level;
 
 public interface IRecipeData<E> {
 
-  <I extends RecipeInput, T extends Recipe<I>> Optional<RecipeHolder<T>> getRecipe(
-      RecipeType<T> type, I inventory, Level level, List<RecipeHolder<T>> recipes);
+  <I extends RecipeInput, T extends Recipe<I>> RecipeHolder<T> getRecipe(RecipeType<T> type,
+                                                                         I inventory, Level level,
+                                                                         List<RecipeHolder<T>> recipes);
 
   void selectRecipe(@Nonnull RecipeHolder<?> recipe);
 
-  Optional<RecipeHolder<?>> getSelectedRecipe();
+  RecipeHolder<?> getSelectedRecipe();
 
-  void setSelectedRecipe(@Nonnull RecipeHolder<?> recipe);
+  void setSelectedRecipe(RecipeHolder<?> recipe);
 
   @Nonnull
   SortedSet<IRecipePair> getRecipesList();
 
   void setRecipesList(@Nonnull SortedSet<IRecipePair> recipesList);
 
-  boolean isEmpty(RecipeInput container);
+  Collection<ServerPlayer> getListeners();
 
-  Set<ServerPlayer> getListeners();
+  void addListener(@Nonnull ServerPlayer player);
 
-  void sendRecipesListToListeners(boolean empty);
+  void removeListener(@Nonnull ServerPlayer player);
 
-  Pair<SortedSet<IRecipePair>, ResourceLocation> getPacketData();
+  void clearListeners();
+
+  void sendRecipesListToListeners();
 
   E getOwner();
-
-  boolean isFailing();
-
-  void setFailing(boolean failing);
 
   @Nonnull
   CompoundTag writeNBT(HolderLookup.Provider provider);

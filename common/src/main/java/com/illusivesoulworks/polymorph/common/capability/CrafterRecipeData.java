@@ -1,6 +1,5 @@
 package com.illusivesoulworks.polymorph.common.capability;
 
-import com.illusivesoulworks.polymorph.api.PolymorphApi;
 import com.illusivesoulworks.polymorph.mixin.core.AccessorCrafterMenu;
 import javax.annotation.Nonnull;
 import net.minecraft.core.NonNullList;
@@ -10,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.CrafterBlockEntity;
 
-public class CrafterRecipeData extends AbstractHighlightedRecipeData<CrafterBlockEntity> {
+public class CrafterRecipeData extends AbstractBlockEntityRecipeData<CrafterBlockEntity> {
 
   public CrafterRecipeData(CrafterBlockEntity owner) {
     super(owner);
@@ -31,10 +30,5 @@ public class CrafterRecipeData extends AbstractHighlightedRecipeData<CrafterBloc
   @Override
   protected NonNullList<ItemStack> getInput() {
     return this.getOwner().getItems();
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return this.getOwner().isEmpty();
   }
 }

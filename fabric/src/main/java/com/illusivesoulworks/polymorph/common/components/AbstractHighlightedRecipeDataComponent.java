@@ -45,16 +45,4 @@ public abstract class AbstractHighlightedRecipeDataComponent<E extends BlockEnti
           .sendHighlightRecipeS2C(listeningPlayer, recipe.id());
     }
   }
-
-  @Override
-  public Pair<SortedSet<IRecipePair>, ResourceLocation> getPacketData() {
-    SortedSet<IRecipePair> recipesList = this.getRecipesList();
-    ResourceLocation selected = null;
-
-    if (!recipesList.isEmpty()) {
-      selected = this.getSelectedRecipe().map(RecipeHolder::id)
-          .orElse(recipesList.first().getResourceLocation());
-    }
-    return new Pair<>(recipesList, selected);
-  }
 }

@@ -38,9 +38,4 @@ public class FurnaceRecipeDataComponent
       return NonNullList.create();
     }
   }
-
-  @Override
-  public boolean isEmpty() {
-    return this.getInput().getFirst().isEmpty();
-  }
 }
