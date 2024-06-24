@@ -17,14 +17,13 @@
 
 package com.illusivesoulworks.polymorph.platform;
 
-import com.illusivesoulworks.polymorph.api.common.base.IPolymorphPacketDistributor;
+import com.illusivesoulworks.polymorph.api.common.base.IPolymorphNetwork;
 import com.illusivesoulworks.polymorph.api.common.capability.IBlockEntityRecipeData;
 import com.illusivesoulworks.polymorph.api.common.capability.IPlayerRecipeData;
 import com.illusivesoulworks.polymorph.common.PolymorphForgeCapabilities;
-import com.illusivesoulworks.polymorph.common.PolymorphForgePacketDistributor;
+import com.illusivesoulworks.polymorph.common.PolymorphForgeNetwork;
 import com.illusivesoulworks.polymorph.platform.services.IPlatform;
 import java.nio.file.Path;
-import java.util.Optional;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -35,8 +34,8 @@ import net.minecraftforge.fml.loading.FMLPaths;
 
 public class ForgePlatform implements IPlatform {
 
-  private static final IPolymorphPacketDistributor PACKET_DISTRIBUTOR =
-      new PolymorphForgePacketDistributor();
+  private static final IPolymorphNetwork PACKET_DISTRIBUTOR =
+      new PolymorphForgeNetwork();
 
   @Override
   public Path getGameDir() {
@@ -75,18 +74,21 @@ public class ForgePlatform implements IPlatform {
     return true;
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Override
-  public Optional<? extends IPlayerRecipeData> getRecipeData(Player player) {
-    return player.getCapability(PolymorphForgeCapabilities.PLAYER_RECIPE_DATA).resolve();
+  public IPlayerRecipeData getRecipeData(Player player) {
+    return player.getCapability(PolymorphForgeCapabilities.PLAYER_RECIPE_DATA).orElse(null);
+  }
+
+  @SuppressWarnings("ConstantConditions")
+  @Override
+  public IBlockEntityRecipeData getRecipeData(BlockEntity blockEntity) {
+    return blockEntity.getCapability(PolymorphForgeCapabilities.BLOCK_ENTITY_RECIPE_DATA)
+        .orElse(null);
   }
 
   @Override
-  public Optional<? extends IBlockEntityRecipeData> getRecipeData(BlockEntity blockEntity) {
-    return blockEntity.getCapability(PolymorphForgeCapabilities.BLOCK_ENTITY_RECIPE_DATA).resolve();
-  }
-
-  @Override
-  public IPolymorphPacketDistributor getPacketDistributor() {
+  public IPolymorphNetwork getPacketDistributor() {
     return PACKET_DISTRIBUTOR;
   }
 }

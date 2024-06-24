@@ -61,7 +61,7 @@ public class RecipeCache {
     return list;
   }
 
-  private <I extends RecipeInput, T extends Recipe<I>> void moveEntryToFront(int index) {
+  private void moveEntryToFront(int index) {
 
     if (index > 0) {
       Entry<?, ?> entry = this.entries[index];

@@ -15,7 +15,7 @@
  * License along with Polymorph.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.illusivesoulworks.polymorph.api.client.widget;
+package com.illusivesoulworks.polymorph.api.client.widgets.children;
 
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
 import com.illusivesoulworks.polymorph.platform.Services;

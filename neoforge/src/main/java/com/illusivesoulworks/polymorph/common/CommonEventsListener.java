@@ -37,21 +37,11 @@ public class CommonEventsListener {
   }
 
   @SubscribeEvent
-  public void serverAboutToStart(final ServerAboutToStartEvent evt) {
-    PolymorphApi.common().setServer(evt.getServer());
-  }
-
-  @SubscribeEvent
   public void playerLoggedOut(final PlayerEvent.PlayerLoggedOutEvent evt) {
 
     if (evt.getEntity() instanceof ServerPlayer serverPlayer) {
       PolymorphCommonEvents.playerDisconnected(serverPlayer);
     }
-  }
-
-  @SubscribeEvent
-  public void serverStopped(final ServerStoppedEvent evt) {
-    PolymorphApi.common().setServer(null);
   }
 
   @SubscribeEvent

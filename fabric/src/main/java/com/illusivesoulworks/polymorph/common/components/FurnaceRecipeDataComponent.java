@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 
 public class FurnaceRecipeDataComponent
-    extends AbstractHighlightedRecipeDataComponent<AbstractFurnaceBlockEntity> {
+    extends AbstractBlockEntityRecipeDataComponent<AbstractFurnaceBlockEntity> {
 
   public FurnaceRecipeDataComponent(AbstractFurnaceBlockEntity owner) {
     super(owner);

@@ -20,7 +20,7 @@ package com.illusivesoulworks.polymorph.common.capability;
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
 import com.illusivesoulworks.polymorph.api.common.capability.IRecipeData;
-import com.illusivesoulworks.polymorph.common.impl.RecipePair;
+import com.illusivesoulworks.polymorph.common.util.RecipePair;
 import com.mojang.datafixers.util.Pair;
 import java.util.Collection;
 import java.util.Collections;
@@ -180,7 +180,7 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
         new Pair<>(this.getRecipesList(), resourceLocation);
 
     for (ServerPlayer listener : this.getListeners()) {
-      PolymorphApi.common().getPacketDistributor()
+      PolymorphApi.getInstance().getNetwork()
           .sendRecipesListS2C(listener, packetData.getFirst(), packetData.getSecond());
     }
   }

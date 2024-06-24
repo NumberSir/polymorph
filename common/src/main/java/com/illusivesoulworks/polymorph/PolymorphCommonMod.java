@@ -18,8 +18,7 @@
 package com.illusivesoulworks.polymorph;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
-import com.illusivesoulworks.polymorph.api.common.base.IPolymorphCommon;
-import com.illusivesoulworks.polymorph.client.impl.PolymorphClient;
+import com.illusivesoulworks.polymorph.client.PolymorphWidgetsImpl;
 import com.illusivesoulworks.polymorph.common.capability.CrafterRecipeData;
 import com.illusivesoulworks.polymorph.common.capability.FurnaceRecipeData;
 import com.illusivesoulworks.polymorph.common.integration.PolymorphIntegrations;
@@ -36,8 +35,8 @@ public class PolymorphCommonMod {
   }
 
   public static void setup() {
-    IPolymorphCommon commonApi = PolymorphApi.common();
-    commonApi.registerBlockEntity2RecipeData(blockEntity -> {
+    PolymorphApi api = PolymorphApi.getInstance();
+    api.registerBlockEntity(blockEntity -> {
       if (blockEntity instanceof AbstractFurnaceBlockEntity) {
         return new FurnaceRecipeData((AbstractFurnaceBlockEntity) blockEntity);
       } else if (blockEntity instanceof CrafterBlockEntity) {
@@ -45,8 +44,8 @@ public class PolymorphCommonMod {
       }
       return null;
     });
-    commonApi.registerContainer2BlockEntity(container -> {
-      for (Slot inventorySlot : container.slots) {
+    api.registerMenu(menu -> {
+      for (Slot inventorySlot : menu.slots) {
         Container inventory = inventorySlot.container;
 
         if (inventory instanceof BlockEntity) {
@@ -59,7 +58,7 @@ public class PolymorphCommonMod {
   }
 
   public static void clientSetup() {
-    PolymorphClient.setup();
+    PolymorphWidgetsImpl.setup();
     PolymorphIntegrations.clientSetup();
   }
 }

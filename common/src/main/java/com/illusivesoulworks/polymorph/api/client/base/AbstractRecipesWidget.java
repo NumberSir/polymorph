@@ -15,10 +15,11 @@
  * License along with Polymorph.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.illusivesoulworks.polymorph.api.client.widget;
+package com.illusivesoulworks.polymorph.api.client.base;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
-import com.illusivesoulworks.polymorph.api.client.base.IRecipesWidget;
+import com.illusivesoulworks.polymorph.api.client.widgets.children.OpenSelectionButton;
+import com.illusivesoulworks.polymorph.api.client.widgets.children.SelectionWidget;
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
 import com.illusivesoulworks.polymorph.platform.Services;
 import com.mojang.datafixers.util.Pair;

@@ -17,7 +17,7 @@
 
 package com.illusivesoulworks.polymorph.platform;
 
-import com.illusivesoulworks.polymorph.api.common.base.IPolymorphPacketDistributor;
+import com.illusivesoulworks.polymorph.api.common.base.IPolymorphNetwork;
 import com.illusivesoulworks.polymorph.api.common.capability.IBlockEntityRecipeData;
 import com.illusivesoulworks.polymorph.api.common.capability.IPlayerRecipeData;
 import com.illusivesoulworks.polymorph.common.PolymorphFabricPacketDistributor;
@@ -33,7 +33,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class FabricPlatform implements IPlatform {
 
-  private static final IPolymorphPacketDistributor PACKET_DISTRIBUTOR =
+  private static final IPolymorphNetwork PACKET_DISTRIBUTOR =
       new PolymorphFabricPacketDistributor();
 
   @Override
@@ -74,17 +74,17 @@ public class FabricPlatform implements IPlatform {
   }
 
   @Override
-  public Optional<? extends IPlayerRecipeData> getRecipeData(Player player) {
-    return PolymorphFabricComponents.PLAYER_RECIPE_DATA.maybeGet(player);
+  public IPlayerRecipeData getRecipeData(Player player) {
+    return PolymorphFabricComponents.PLAYER_RECIPE_DATA.get(player);
   }
 
   @Override
-  public Optional<? extends IBlockEntityRecipeData> getRecipeData(BlockEntity blockEntity) {
-    return PolymorphFabricComponents.BLOCK_ENTITY_RECIPE_DATA.maybeGet(blockEntity);
+  public IBlockEntityRecipeData getRecipeData(BlockEntity blockEntity) {
+    return PolymorphFabricComponents.BLOCK_ENTITY_RECIPE_DATA.get(blockEntity);
   }
 
   @Override
-  public IPolymorphPacketDistributor getPacketDistributor() {
+  public IPolymorphNetwork getPacketDistributor() {
     return PACKET_DISTRIBUTOR;
   }
 }

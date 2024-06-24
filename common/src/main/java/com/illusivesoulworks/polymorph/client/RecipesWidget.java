@@ -15,13 +15,14 @@
  * License along with Polymorph.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.illusivesoulworks.polymorph.client.recipe;
+package com.illusivesoulworks.polymorph.client;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
+import com.illusivesoulworks.polymorph.api.client.PolymorphWidgets;
 import com.illusivesoulworks.polymorph.api.client.base.IRecipesWidget;
+import com.illusivesoulworks.polymorph.api.client.base.PersistentRecipesWidget;
+import com.illusivesoulworks.polymorph.api.client.widgets.PlayerRecipesWidget;
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
-import com.illusivesoulworks.polymorph.client.recipe.widget.PersistentRecipesWidget;
-import com.illusivesoulworks.polymorph.client.recipe.widget.PlayerRecipesWidget;
 import com.mojang.datafixers.util.Pair;
 import java.util.Optional;
 import java.util.SortedSet;
@@ -29,6 +30,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.Slot;
 
 public class RecipesWidget {
 
@@ -50,20 +52,22 @@ public class RecipesWidget {
     if (containerScreen == lastScreen && widget != null) {
       return;
     }
-    widget = null;
-    Optional<IRecipesWidget> maybeWidget = PolymorphApi.client().getWidget(containerScreen);
-    maybeWidget.ifPresent(newWidget -> widget = newWidget);
+    PolymorphWidgets polymorphWidgets = PolymorphWidgets.getInstance();
+    widget = polymorphWidgets.getWidget(containerScreen);
 
     if (widget == null) {
-      PolymorphApi.client().findCraftingResultSlot(containerScreen)
-          .ifPresent(slot -> widget = new PlayerRecipesWidget(containerScreen, slot));
+      Slot slot = polymorphWidgets.findResultSlot(containerScreen);
+
+      if (slot != null) {
+        widget = new PlayerRecipesWidget(containerScreen, slot);
+      }
     }
 
     if (widget != null) {
 
       if (widget instanceof PersistentRecipesWidget &&
           Minecraft.getInstance().getConnection() != null) {
-        PolymorphApi.common().getPacketDistributor().sendBlockEntityListenerC2S(true);
+        PolymorphApi.getInstance().getNetwork().sendBlockEntityListenerC2S(true);
       }
       widget.initChildWidgets();
       lastScreen = containerScreen;
@@ -81,7 +85,7 @@ public class RecipesWidget {
 
     if (widget instanceof PersistentRecipesWidget &&
         Minecraft.getInstance().getConnection() != null) {
-      PolymorphApi.common().getPacketDistributor().sendBlockEntityListenerC2S(false);
+      PolymorphApi.getInstance().getNetwork().sendBlockEntityListenerC2S(false);
     }
     widget = null;
     lastScreen = null;

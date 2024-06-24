@@ -17,7 +17,7 @@
 
 package com.illusivesoulworks.polymorph.mixin.core;
 
-import com.illusivesoulworks.polymorph.common.crafting.RecipeSelection;
+import com.illusivesoulworks.polymorph.api.PolymorphApi;
 import java.util.Optional;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -49,6 +49,7 @@ public class MixinCraftingMenu {
       RecipeHolder<CraftingRecipe> recipeHolder, AbstractContainerMenu menu, Level unused,
       Player player, CraftingContainer craftingContainer, ResultContainer resultContainer,
       RecipeHolder<CraftingRecipe> unused1) {
-    return RecipeSelection.getPlayerRecipe(menu, type, craftingInput, world, player);
+    return PolymorphApi.getInstance().getRecipeManager()
+        .getPlayerRecipe(menu, type, craftingInput, world, player);
   }
 }

@@ -17,14 +17,13 @@
 
 package com.illusivesoulworks.polymorph.platform;
 
-import com.illusivesoulworks.polymorph.api.common.base.IPolymorphPacketDistributor;
+import com.illusivesoulworks.polymorph.api.common.base.IPolymorphNetwork;
 import com.illusivesoulworks.polymorph.api.common.capability.IBlockEntityRecipeData;
 import com.illusivesoulworks.polymorph.api.common.capability.IPlayerRecipeData;
 import com.illusivesoulworks.polymorph.common.PolymorphNeoForgeCapabilities;
 import com.illusivesoulworks.polymorph.common.network.PolymorphNeoForgePacketDistributor;
 import com.illusivesoulworks.polymorph.platform.services.IPlatform;
 import java.nio.file.Path;
-import java.util.Optional;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -35,7 +34,7 @@ import net.neoforged.neoforge.common.crafting.IShapedRecipe;
 
 public class NeoForgePlatform implements IPlatform {
 
-  private static final IPolymorphPacketDistributor PACKET_DISTRIBUTOR =
+  private static final IPolymorphNetwork PACKET_DISTRIBUTOR =
       new PolymorphNeoForgePacketDistributor();
 
   @Override
@@ -76,20 +75,19 @@ public class NeoForgePlatform implements IPlatform {
   }
 
   @Override
-  public Optional<? extends IPlayerRecipeData> getRecipeData(Player player) {
-    return Optional.ofNullable(
-        (IPlayerRecipeData) player.getData(PolymorphNeoForgeCapabilities.RECIPE_DATA.get())
-            .getRecipeData());
+  public IPlayerRecipeData getRecipeData(Player player) {
+    return (IPlayerRecipeData) player.getData(PolymorphNeoForgeCapabilities.RECIPE_DATA.get())
+        .getRecipeData();
   }
 
   @Override
-  public Optional<? extends IBlockEntityRecipeData> getRecipeData(BlockEntity blockEntity) {
-    return Optional.ofNullable((IBlockEntityRecipeData) blockEntity.getData(
-        PolymorphNeoForgeCapabilities.RECIPE_DATA.get()).getRecipeData());
+  public IBlockEntityRecipeData getRecipeData(BlockEntity blockEntity) {
+    return (IBlockEntityRecipeData) blockEntity.getData(
+        PolymorphNeoForgeCapabilities.RECIPE_DATA.get()).getRecipeData();
   }
 
   @Override
-  public IPolymorphPacketDistributor getPacketDistributor() {
+  public IPolymorphNetwork getPacketDistributor() {
     return PACKET_DISTRIBUTOR;
   }
 }

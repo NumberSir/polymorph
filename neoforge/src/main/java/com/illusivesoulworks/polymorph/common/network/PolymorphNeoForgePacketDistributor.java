@@ -17,7 +17,7 @@
 
 package com.illusivesoulworks.polymorph.common.network;
 
-import com.illusivesoulworks.polymorph.api.common.base.IPolymorphPacketDistributor;
+import com.illusivesoulworks.polymorph.api.common.base.IPolymorphNetwork;
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
 import com.illusivesoulworks.polymorph.common.network.client.CPacketBlockEntityListener;
 import com.illusivesoulworks.polymorph.common.network.client.CPacketPersistentRecipeSelection;
@@ -33,7 +33,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class PolymorphNeoForgePacketDistributor implements IPolymorphPacketDistributor {
+public class PolymorphNeoForgePacketDistributor implements IPolymorphNetwork {
 
   @Override
   public void sendPlayerRecipeSelectionC2S(ResourceLocation resourceLocation) {
@@ -65,11 +65,6 @@ public class PolymorphNeoForgePacketDistributor implements IPolymorphPacketDistr
     }
     PacketDistributor.sendToPlayer(player,
         new SPacketRecipesList(Optional.ofNullable(set), Optional.ofNullable(selected)));
-  }
-
-  @Override
-  public void sendHighlightRecipeS2C(ServerPlayer player, ResourceLocation pResourceLocation) {
-    PacketDistributor.sendToPlayer(player, new SPacketHighlightRecipe(pResourceLocation));
   }
 
   @Override

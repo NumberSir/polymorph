@@ -18,11 +18,11 @@
 package com.illusivesoulworks.polymorph.common.network.client;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
+import com.illusivesoulworks.polymorph.api.common.capability.IBlockEntityRecipeData;
 import com.illusivesoulworks.polymorph.common.integration.PolymorphIntegrations;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -35,7 +35,8 @@ public record CPacketPersistentRecipeSelection(ResourceLocation recipe) implemen
     CustomPacketPayload {
 
   public static final Type<CPacketPersistentRecipeSelection> TYPE =
-      new Type<>(ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "persistent_recipe_selection"));
+      new Type<>(ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID,
+          "persistent_recipe_selection"));
   public static final StreamCodec<FriendlyByteBuf, CPacketPersistentRecipeSelection> STREAM_CODEC =
       StreamCodec.composite(
           ResourceLocation.STREAM_CODEC,
@@ -48,11 +49,13 @@ public record CPacketPersistentRecipeSelection(ResourceLocation recipe) implemen
         world.getRecipeManager().byKey(packet.recipe);
     maybeRecipe.ifPresent(recipe -> {
       AbstractContainerMenu container = player.containerMenu;
-      PolymorphApi.common().getRecipeDataFromBlockEntity(container)
-          .ifPresent(recipeData -> {
-            recipeData.selectRecipe(recipe);
-            PolymorphIntegrations.selectRecipe(recipeData.getOwner(), container, recipe);
-          });
+      IBlockEntityRecipeData recipeData =
+          PolymorphApi.getInstance().getBlockEntityRecipeData(container);
+
+      if (recipeData != null) {
+        recipeData.selectRecipe(recipe);
+        PolymorphIntegrations.selectRecipe(recipeData.getOwner(), container, recipe);
+      }
     });
   }
 

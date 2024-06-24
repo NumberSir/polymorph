@@ -18,11 +18,10 @@
 package com.illusivesoulworks.polymorph.api.common.base;
 
 import java.util.SortedSet;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
-public interface IPolymorphPacketDistributor {
+public interface IPolymorphNetwork {
 
   void sendPlayerRecipeSelectionC2S(ResourceLocation resourceLocation);
 
@@ -34,8 +33,6 @@ public interface IPolymorphPacketDistributor {
 
   void sendRecipesListS2C(ServerPlayer player, SortedSet<IRecipePair> recipesList,
                           ResourceLocation selected);
-
-  void sendHighlightRecipeS2C(ServerPlayer player, ResourceLocation resourceLocation);
 
   void sendPlayerSyncS2C(ServerPlayer player, SortedSet<IRecipePair> recipesList,
                          ResourceLocation selected);

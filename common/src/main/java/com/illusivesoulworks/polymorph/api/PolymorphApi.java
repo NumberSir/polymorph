@@ -18,18 +18,52 @@
 package com.illusivesoulworks.polymorph.api;
 
 import com.illusivesoulworks.polymorph.PolymorphConstants;
-import com.illusivesoulworks.polymorph.api.client.base.IPolymorphClient;
-import com.illusivesoulworks.polymorph.api.common.base.IPolymorphCommon;
+import com.illusivesoulworks.polymorph.api.common.base.IPolymorphNetwork;
+import com.illusivesoulworks.polymorph.api.common.base.IPolymorphRecipeManager;
+import com.illusivesoulworks.polymorph.api.common.capability.IBlockEntityRecipeData;
+import com.illusivesoulworks.polymorph.api.common.capability.IPlayerRecipeData;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public final class PolymorphApi {
+public abstract class PolymorphApi {
 
   public static final String MOD_ID = PolymorphConstants.MOD_ID;
 
-  public static IPolymorphCommon common() {
-    throw new IllegalStateException("Polymorph Common API missing!");
+  private static PolymorphApi instance;
+
+  public static PolymorphApi getInstance() {
+
+    if (instance == null) {
+      throw new RuntimeException("Missing Polymorph API implementation!");
+    }
+    return instance;
   }
 
-  public static IPolymorphClient client() {
-    throw new IllegalStateException("Polymorph Client API missing!");
+  public abstract IPolymorphNetwork getNetwork();
+
+  public abstract IPolymorphRecipeManager getRecipeManager();
+
+  public abstract IBlockEntityRecipeData createBlockEntityRecipeData(BlockEntity blockEntity);
+
+  public abstract IBlockEntityRecipeData getBlockEntityRecipeData(BlockEntity blockEntity);
+
+  public abstract IBlockEntityRecipeData getBlockEntityRecipeData(
+      AbstractContainerMenu containerMenu);
+
+  public abstract IPlayerRecipeData getPlayerRecipeData(Player player);
+
+  public abstract void registerBlockEntity(IRecipeDataFactory blockEntity2RecipeData);
+
+  public abstract void registerMenu(IBlockEntityFactory container2BlockEntity);
+
+  public interface IRecipeDataFactory {
+
+    IBlockEntityRecipeData createRecipeData(BlockEntity blockEntity);
+  }
+
+  public interface IBlockEntityFactory {
+
+    BlockEntity getBlockEntity(AbstractContainerMenu containerMenu);
   }
 }

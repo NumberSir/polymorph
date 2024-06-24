@@ -18,6 +18,7 @@
 package com.illusivesoulworks.polymorph.common;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
+import com.illusivesoulworks.polymorph.api.common.capability.IBlockEntityRecipeData;
 import com.illusivesoulworks.polymorph.api.common.capability.IRecipeData;
 import com.illusivesoulworks.polymorph.common.capability.PlayerRecipeData;
 import java.util.function.Supplier;
@@ -56,8 +57,12 @@ public class PolymorphNeoForgeCapabilities {
       if (attachmentHolder instanceof Player player) {
         this.recipeData = new PlayerRecipeData(player);
       } else if (attachmentHolder instanceof BlockEntity blockEntity) {
-        PolymorphApi.common().tryCreateRecipeData(blockEntity)
-            .ifPresent(rd -> this.recipeData = rd);
+        IBlockEntityRecipeData data =
+            PolymorphApi.getInstance().createBlockEntityRecipeData(blockEntity);
+
+        if (data != null) {
+          this.recipeData = data;
+        }
       }
     }
 

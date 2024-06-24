@@ -17,12 +17,11 @@
 
 package com.illusivesoulworks.polymorph.common;
 
-import com.illusivesoulworks.polymorph.api.common.base.IPolymorphPacketDistributor;
+import com.illusivesoulworks.polymorph.api.common.base.IPolymorphNetwork;
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
 import com.illusivesoulworks.polymorph.common.network.client.CPacketBlockEntityListener;
 import com.illusivesoulworks.polymorph.common.network.client.CPacketPersistentRecipeSelection;
 import com.illusivesoulworks.polymorph.common.network.client.CPacketPlayerRecipeSelection;
-import com.illusivesoulworks.polymorph.common.network.server.SPacketHighlightRecipe;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketPlayerRecipeSync;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketRecipesList;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketUpdatePreview;
@@ -34,7 +33,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
-public class PolymorphFabricPacketDistributor implements IPolymorphPacketDistributor {
+public class PolymorphFabricPacketDistributor implements IPolymorphNetwork {
 
   @Override
   public void sendPlayerRecipeSelectionC2S(ResourceLocation resourceLocation) {
@@ -66,11 +65,6 @@ public class PolymorphFabricPacketDistributor implements IPolymorphPacketDistrib
     }
     ServerPlayNetworking.send(player,
         new SPacketRecipesList(Optional.ofNullable(set), Optional.ofNullable(selected)));
-  }
-
-  @Override
-  public void sendHighlightRecipeS2C(ServerPlayer player, ResourceLocation resourceLocation) {
-    ServerPlayNetworking.send(player, new SPacketHighlightRecipe(resourceLocation));
   }
 
   @Override

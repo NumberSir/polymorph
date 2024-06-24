@@ -15,22 +15,25 @@
  * License along with Polymorph.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.illusivesoulworks.polymorph.api.client.base;
+package com.illusivesoulworks.polymorph.api.client.widgets;
 
-import java.util.Optional;
+import com.illusivesoulworks.polymorph.api.client.base.PersistentRecipesWidget;
+import java.util.List;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.Slot;
 
-public interface IPolymorphClient {
+public class FurnaceRecipesWidget extends PersistentRecipesWidget {
 
-  Optional<IRecipesWidget> getWidget(AbstractContainerScreen<?> containerScreen);
+  private final Slot outputSlot;
 
-  void registerWidget(IRecipesWidgetFactory factory);
+  public FurnaceRecipesWidget(AbstractContainerScreen<?> containerScreen) {
+    super(containerScreen);
+    List<Slot> slots = containerScreen.getMenu().slots;
+    this.outputSlot = slots.get(2);
+  }
 
-  Optional<Slot> findCraftingResultSlot(AbstractContainerScreen<?> containerScreen);
-
-  interface IRecipesWidgetFactory {
-
-    IRecipesWidget createWidget(AbstractContainerScreen<?> containerScreen);
+  @Override
+  public Slot getOutputSlot() {
+    return this.outputSlot;
   }
 }

@@ -20,7 +20,7 @@ package com.illusivesoulworks.polymorph.common.capability;
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
 import com.illusivesoulworks.polymorph.api.common.capability.IPlayerRecipeData;
-import com.illusivesoulworks.polymorph.client.recipe.RecipesWidget;
+import com.illusivesoulworks.polymorph.client.RecipesWidget;
 import com.mojang.datafixers.util.Pair;
 import java.util.List;
 import java.util.SortedSet;
@@ -86,7 +86,7 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
     if (this.getOwner() instanceof ServerPlayer) {
       ResourceLocation resourceLocation =
           this.getSelectedRecipe() != null ? this.getSelectedRecipe().id() : null;
-      PolymorphApi.common().getPacketDistributor()
+      PolymorphApi.getInstance().getNetwork()
           .sendPlayerSyncS2C((ServerPlayer) this.getOwner(), this.getRecipesList(),
               resourceLocation);
     }
@@ -106,7 +106,7 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
         RecipesWidget.get().ifPresent(
             widget -> widget.setRecipesList(packetData.getFirst(), packetData.getSecond()));
       } else if (player instanceof ServerPlayer) {
-        PolymorphApi.common().getPacketDistributor()
+        PolymorphApi.getInstance().getNetwork()
             .sendRecipesListS2C((ServerPlayer) player, packetData.getFirst(),
                 packetData.getSecond());
       }

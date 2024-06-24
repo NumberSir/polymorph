@@ -41,8 +41,6 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.server.ServerAboutToStartEvent;
-import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @SuppressWarnings("unused")
@@ -60,21 +58,11 @@ public class CommonEventsListener {
   }
 
   @SubscribeEvent
-  public void serverAboutToStart(final ServerAboutToStartEvent evt) {
-    PolymorphApi.common().setServer(evt.getServer());
-  }
-
-  @SubscribeEvent
   public void playerLoggedOut(final PlayerEvent.PlayerLoggedOutEvent evt) {
 
     if (evt.getEntity() instanceof ServerPlayer serverPlayer) {
       PolymorphCommonEvents.playerDisconnected(serverPlayer);
     }
-  }
-
-  @SubscribeEvent
-  public void serverStopped(final ServerStoppedEvent evt) {
-    PolymorphApi.common().setServer(null);
   }
 
   @SubscribeEvent
@@ -93,12 +81,13 @@ public class CommonEventsListener {
   @SubscribeEvent
   public void attachCapabilities(final AttachCapabilitiesEvent<BlockEntity> evt) {
     BlockEntity be = evt.getObject();
-    PolymorphApi.common().tryCreateRecipeData(be).ifPresent(
-        recipeData -> {
-          LazyOptional<IBlockEntityRecipeData> cap = LazyOptional.of(() -> recipeData);
-          evt.addCapability(PolymorphForgeCapabilities.BLOCK_ENTITY_RECIPE_DATA_ID,
-              new BlockEntityRecipeDataProvider(be, cap));
-        });
+    IBlockEntityRecipeData recipeData = PolymorphApi.getInstance().getBlockEntityRecipeData(be);
+
+    if (recipeData != null) {
+      LazyOptional<IBlockEntityRecipeData> cap = LazyOptional.of(() -> recipeData);
+      evt.addCapability(PolymorphForgeCapabilities.BLOCK_ENTITY_RECIPE_DATA_ID,
+          new BlockEntityRecipeDataProvider(be, cap));
+    }
   }
 
   @SubscribeEvent

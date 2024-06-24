@@ -1,5 +1,6 @@
-package com.illusivesoulworks.polymorph.client.recipe.widget;
+package com.illusivesoulworks.polymorph.api.client.widgets;
 
+import com.illusivesoulworks.polymorph.api.client.base.PersistentRecipesWidget;
 import java.util.List;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.NonInteractiveResultSlot;

@@ -18,7 +18,6 @@
 package com.illusivesoulworks.polymorph.mixin.core;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
-import com.illusivesoulworks.polymorph.common.crafting.RecipeSelection;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerPlayer;
@@ -65,8 +64,7 @@ public abstract class MixinSmithingMenu extends ItemCombinerMenu {
     this.polymorph$matchingRecipes = recipes;
 
     if (this.player instanceof ServerPlayer && recipes.isEmpty()) {
-      PolymorphApi.common().getPacketDistributor()
-          .sendRecipesListS2C((ServerPlayer) this.player);
+      PolymorphApi.getInstance().getNetwork().sendRecipesListS2C((ServerPlayer) this.player);
     }
     return recipes;
   }
@@ -80,8 +78,9 @@ public abstract class MixinSmithingMenu extends ItemCombinerMenu {
       method = "createResult")
   private RecipeHolder<SmithingRecipe> polymorph$updateRepairOutput(
       RecipeHolder<SmithingRecipe> smithingRecipe) {
-    return RecipeSelection.getPlayerRecipe((SmithingMenu) (Object) this, RecipeType.SMITHING,
-            this.createRecipeInput(), this.player.level(), this.player, this.polymorph$matchingRecipes)
-        .orElse(smithingRecipe);
+    return PolymorphApi.getInstance().getRecipeManager()
+        .getPlayerRecipe((SmithingMenu) (Object) this, RecipeType.SMITHING,
+            this.createRecipeInput(), this.player.level(), this.player,
+            this.polymorph$matchingRecipes).orElse(smithingRecipe);
   }
 }

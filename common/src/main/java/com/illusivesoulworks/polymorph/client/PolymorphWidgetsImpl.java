@@ -15,16 +15,15 @@
  * License along with Polymorph.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.illusivesoulworks.polymorph.client.impl;
+package com.illusivesoulworks.polymorph.client;
 
-import com.illusivesoulworks.polymorph.api.client.base.IPolymorphClient;
+import com.illusivesoulworks.polymorph.api.client.PolymorphWidgets;
 import com.illusivesoulworks.polymorph.api.client.base.IRecipesWidget;
-import com.illusivesoulworks.polymorph.client.recipe.widget.CrafterRecipesWidget;
-import com.illusivesoulworks.polymorph.client.recipe.widget.FurnaceRecipesWidget;
-import com.illusivesoulworks.polymorph.client.recipe.widget.PlayerRecipesWidget;
+import com.illusivesoulworks.polymorph.api.client.widgets.CrafterRecipesWidget;
+import com.illusivesoulworks.polymorph.api.client.widgets.FurnaceRecipesWidget;
+import com.illusivesoulworks.polymorph.api.client.widgets.PlayerRecipesWidget;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
@@ -33,18 +32,14 @@ import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.SmithingMenu;
 
-public class PolymorphClient implements IPolymorphClient {
+public class PolymorphWidgetsImpl extends PolymorphWidgets {
 
-  private static final IPolymorphClient INSTANCE = new PolymorphClient();
-
-  public static IPolymorphClient get() {
-    return INSTANCE;
-  }
+  public static final PolymorphWidgets INSTANCE = new PolymorphWidgetsImpl();
 
   private final List<IRecipesWidgetFactory> widgetFactories = new LinkedList<>();
 
   public static void setup() {
-    get().registerWidget(containerScreen -> {
+    INSTANCE.registerWidget(containerScreen -> {
       AbstractContainerMenu container = containerScreen.getMenu();
 
       return switch (container) {
@@ -57,18 +52,18 @@ public class PolymorphClient implements IPolymorphClient {
     });
   }
 
-  public Optional<IRecipesWidget> getWidget(AbstractContainerScreen<?> pContainerScreen) {
+  @Override
+  public IRecipesWidget getWidget(AbstractContainerScreen<?> pContainerScreen) {
 
     for (IRecipesWidgetFactory factory : this.widgetFactories) {
       IRecipesWidget widget = factory.createWidget(pContainerScreen);
 
       if (widget != null) {
-        return Optional.of(widget);
+        return widget;
       }
     }
-    return Optional.empty();
+    return null;
   }
-
 
   @Override
   public void registerWidget(IRecipesWidgetFactory pFactory) {
@@ -76,15 +71,15 @@ public class PolymorphClient implements IPolymorphClient {
   }
 
   @Override
-  public Optional<Slot> findCraftingResultSlot(AbstractContainerScreen<?> pContainerScreen) {
+  public Slot findResultSlot(AbstractContainerScreen<?> pContainerScreen) {
     AbstractContainerMenu container = pContainerScreen.getMenu();
 
     for (Slot slot : container.slots) {
 
       if (slot.container instanceof ResultContainer) {
-        return Optional.of(slot);
+        return slot;
       }
     }
-    return Optional.empty();
+    return null;
   }
 }

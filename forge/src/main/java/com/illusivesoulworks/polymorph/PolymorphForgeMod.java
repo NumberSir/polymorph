@@ -19,7 +19,7 @@ package com.illusivesoulworks.polymorph;
 
 import com.illusivesoulworks.polymorph.client.ClientEventsListener;
 import com.illusivesoulworks.polymorph.common.CommonEventsListener;
-import com.illusivesoulworks.polymorph.common.PolymorphForgeNetwork;
+import com.illusivesoulworks.polymorph.common.PolymorphForgeChannel;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -39,7 +39,7 @@ public class PolymorphForgeMod {
 
   private void setup(final FMLCommonSetupEvent evt) {
     PolymorphCommonMod.setup();
-    PolymorphForgeNetwork.setup();
+    PolymorphForgeChannel.setup();
     MinecraftForge.EVENT_BUS.register(new CommonEventsListener());
   }
 

@@ -18,6 +18,7 @@
 package com.illusivesoulworks.polymorph.common.network.client;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
+import com.illusivesoulworks.polymorph.api.common.capability.IPlayerRecipeData;
 import com.illusivesoulworks.polymorph.common.integration.PolymorphIntegrations;
 import javax.annotation.Nonnull;
 import net.minecraft.network.FriendlyByteBuf;
@@ -30,8 +31,8 @@ import net.minecraft.world.inventory.ItemCombinerMenu;
 
 public record CPacketPlayerRecipeSelection(ResourceLocation recipe) implements CustomPacketPayload {
 
-  public static final Type<CPacketPlayerRecipeSelection> TYPE =
-      new Type<>(ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "player_recipe_selection"));
+  public static final Type<CPacketPlayerRecipeSelection> TYPE = new Type<>(
+      ResourceLocation.fromNamespaceAndPath(PolymorphApi.MOD_ID, "player_recipe_selection"));
   public static final StreamCodec<FriendlyByteBuf, CPacketPlayerRecipeSelection> STREAM_CODEC =
       StreamCodec.composite(
           ResourceLocation.STREAM_CODEC,
@@ -41,15 +42,19 @@ public record CPacketPlayerRecipeSelection(ResourceLocation recipe) implements C
   public static void handle(CPacketPlayerRecipeSelection packet, ServerPlayer player) {
     AbstractContainerMenu container = player.containerMenu;
     player.level().getRecipeManager().byKey(packet.recipe).ifPresent(recipe -> {
-      PolymorphApi.common().getRecipeData(player)
-          .ifPresent(recipeData -> recipeData.selectRecipe(recipe));
+      PolymorphApi api = PolymorphApi.getInstance();
+      IPlayerRecipeData recipeData = api.getPlayerRecipeData(player);
+
+      if (recipeData != null) {
+        recipeData.selectRecipe(recipe);
+      }
       PolymorphIntegrations.selectRecipe(container, recipe);
       container.slotsChanged(player.getInventory());
 
       if (container instanceof ItemCombinerMenu) {
         ((ItemCombinerMenu) container).createResult();
-        ((ItemCombinerMenu) container).broadcastChanges();
-        PolymorphApi.common().getPacketDistributor().sendUpdatePreviewS2C(player);
+        container.broadcastChanges();
+        api.getNetwork().sendUpdatePreviewS2C(player);
       }
     });
   }

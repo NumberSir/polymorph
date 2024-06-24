@@ -17,8 +17,6 @@
 
 package com.illusivesoulworks.polymorph.common;
 
-import com.illusivesoulworks.polymorph.api.PolymorphApi;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.MinecraftServer;
@@ -28,8 +26,6 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 public class CommonEventsListener {
 
   public static void setup() {
-    ServerLifecycleEvents.SERVER_STARTING.register(CommonEventsListener::serverStarting);
-    ServerLifecycleEvents.SERVER_STOPPED.register(CommonEventsListener::serverStopped);
     ServerTickEvents.END_WORLD_TICK.register(CommonEventsListener::levelTick);
     ServerPlayConnectionEvents.DISCONNECT.register(CommonEventsListener::disconnect);
   }
@@ -41,13 +37,5 @@ public class CommonEventsListener {
 
   private static void levelTick(final ServerLevel serverLevel) {
     PolymorphCommonEvents.levelTick(serverLevel);
-  }
-
-  private static void serverStopped(final MinecraftServer server) {
-    PolymorphApi.common().setServer(null);
-  }
-
-  private static void serverStarting(final MinecraftServer server) {
-    PolymorphApi.common().setServer(server);
   }
 }

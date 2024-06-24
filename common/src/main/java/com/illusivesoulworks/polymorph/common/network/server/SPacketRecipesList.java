@@ -19,7 +19,7 @@ package com.illusivesoulworks.polymorph.common.network.server;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
-import com.illusivesoulworks.polymorph.common.impl.RecipePair;
+import com.illusivesoulworks.polymorph.common.util.RecipePair;
 import java.util.HashSet;
 import java.util.Optional;
 import javax.annotation.Nonnull;

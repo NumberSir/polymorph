@@ -17,9 +17,8 @@
 
 package com.illusivesoulworks.polymorph.api.client.base;
 
-import com.illusivesoulworks.polymorph.api.client.widget.SelectionWidget;
+import com.illusivesoulworks.polymorph.api.client.widgets.children.SelectionWidget;
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.Set;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;

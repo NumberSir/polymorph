@@ -18,6 +18,7 @@
 package com.illusivesoulworks.polymorph.common.network.client;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
+import com.illusivesoulworks.polymorph.api.common.capability.IBlockEntityRecipeData;
 import com.illusivesoulworks.polymorph.common.util.BlockEntityTicker;
 import javax.annotation.Nonnull;
 import net.minecraft.network.FriendlyByteBuf;
@@ -46,18 +47,20 @@ public record CPacketBlockEntityListener(boolean add) implements CustomPacketPay
 
       if (packet.add) {
         AbstractContainerMenu container = player.containerMenu;
-        PolymorphApi.common().getRecipeDataFromBlockEntity(container)
-            .ifPresent(recipeData -> {
-              BlockEntityTicker.add(player, recipeData);
-              ResourceLocation resourceLocation = null;
-              RecipeHolder<?> recipeHolder = recipeData.getSelectedRecipe();
+        PolymorphApi api = PolymorphApi.getInstance();
+        IBlockEntityRecipeData recipeData = api.getBlockEntityRecipeData(container);
 
-              if (recipeHolder != null) {
-                resourceLocation = recipeHolder.id();
-              }
-              PolymorphApi.common().getPacketDistributor()
-                  .sendRecipesListS2C(player, recipeData.getRecipesList(), resourceLocation);
-            });
+        if (recipeData != null) {
+          BlockEntityTicker.add(player, recipeData);
+          ResourceLocation resourceLocation = null;
+          RecipeHolder<?> recipeHolder = recipeData.getSelectedRecipe();
+
+          if (recipeHolder != null) {
+            resourceLocation = recipeHolder.id();
+          }
+          api.getNetwork()
+              .sendRecipesListS2C(player, recipeData.getRecipesList(), resourceLocation);
+        }
       } else {
         BlockEntityTicker.remove(player);
       }

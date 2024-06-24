@@ -17,7 +17,7 @@
 
 package com.illusivesoulworks.polymorph.platform.services;
 
-import com.illusivesoulworks.polymorph.api.common.base.IPolymorphPacketDistributor;
+import com.illusivesoulworks.polymorph.api.common.base.IPolymorphNetwork;
 import com.illusivesoulworks.polymorph.api.common.capability.IBlockEntityRecipeData;
 import com.illusivesoulworks.polymorph.api.common.capability.IPlayerRecipeData;
 import java.nio.file.Path;
@@ -40,9 +40,9 @@ public interface IPlatform {
 
   boolean isSameShape(Recipe<?> recipe1, Recipe<?> recipe2);
 
-  Optional<? extends IPlayerRecipeData> getRecipeData(Player player);
+  IPlayerRecipeData getRecipeData(Player player);
 
-  Optional<? extends IBlockEntityRecipeData> getRecipeData(BlockEntity blockEntity);
+  IBlockEntityRecipeData getRecipeData(BlockEntity blockEntity);
 
-  IPolymorphPacketDistributor getPacketDistributor();
+  IPolymorphNetwork getPacketDistributor();
 }

@@ -20,7 +20,8 @@ package com.illusivesoulworks.polymorph.common.network.server;
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
 import com.illusivesoulworks.polymorph.api.client.base.IRecipesWidget;
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
-import com.illusivesoulworks.polymorph.client.recipe.RecipesWidget;
+import com.illusivesoulworks.polymorph.api.common.capability.IPlayerRecipeData;
+import com.illusivesoulworks.polymorph.client.RecipesWidget;
 import com.illusivesoulworks.polymorph.mixin.core.AccessorSmithingScreen;
 import java.util.HashSet;
 import java.util.Optional;
@@ -36,11 +37,14 @@ public class ClientPacketHandler {
     LocalPlayer clientPlayerEntity = Minecraft.getInstance().player;
 
     if (clientPlayerEntity != null) {
-      PolymorphApi.common().getRecipeData(clientPlayerEntity).ifPresent(recipeData -> {
+      IPlayerRecipeData recipeData =
+          PolymorphApi.getInstance().getPlayerRecipeData(clientPlayerEntity);
+
+      if (recipeData != null) {
         recipeData.setRecipesList(sort(packet.recipeList().orElse(new HashSet<>())));
         packet.selected().flatMap(resourceLocation -> clientPlayerEntity.level().getRecipeManager()
             .byKey(resourceLocation)).ifPresent(recipeData::setSelectedRecipe);
-      });
+      }
     }
   }
 
@@ -72,7 +76,7 @@ public class ClientPacketHandler {
     return new TreeSet<>(set);
   }
 
-  public static void handle(SPacketUpdatePreview packet) {
+  public static void handle(SPacketUpdatePreview unused) {
     Minecraft mc = Minecraft.getInstance();
 
     if (mc.screen instanceof SmithingScreen smithingScreen) {

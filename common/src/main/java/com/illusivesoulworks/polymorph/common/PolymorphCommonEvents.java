@@ -18,8 +18,7 @@
 package com.illusivesoulworks.polymorph.common;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
-import com.illusivesoulworks.polymorph.api.common.base.IPolymorphCommon;
-import com.illusivesoulworks.polymorph.api.common.capability.IRecipeData;
+import com.illusivesoulworks.polymorph.api.common.capability.IBlockEntityRecipeData;
 import com.illusivesoulworks.polymorph.common.integration.PolymorphIntegrations;
 import com.illusivesoulworks.polymorph.common.util.BlockEntityTicker;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,9 +42,12 @@ public class PolymorphCommonEvents {
   public static void openContainer(Player player, AbstractContainerMenu containerMenu) {
 
     if (!player.level().isClientSide() && player instanceof ServerPlayer serverPlayerEntity) {
-      IPolymorphCommon commonApi = PolymorphApi.common();
-      commonApi.getRecipeDataFromBlockEntity(containerMenu)
-          .ifPresent(IRecipeData::sendRecipesListToListeners);
+      IBlockEntityRecipeData recipeData =
+          PolymorphApi.getInstance().getBlockEntityRecipeData(containerMenu);
+
+      if (recipeData != null) {
+        recipeData.sendRecipesListToListeners();
+      }
       PolymorphIntegrations.openContainer(containerMenu, serverPlayerEntity);
     }
   }
