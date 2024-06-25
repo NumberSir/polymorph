@@ -53,15 +53,7 @@ public class RecipesWidget {
       return;
     }
     PolymorphWidgets polymorphWidgets = PolymorphWidgets.getInstance();
-    widget = polymorphWidgets.getWidget(containerScreen);
-
-    if (widget == null) {
-      Slot slot = polymorphWidgets.findResultSlot(containerScreen);
-
-      if (slot != null) {
-        widget = new PlayerRecipesWidget(containerScreen, slot);
-      }
-    }
+    widget = polymorphWidgets.getWidgetOrDefault(containerScreen);
 
     if (widget != null) {
 

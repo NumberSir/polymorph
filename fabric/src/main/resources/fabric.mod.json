@@ -33,6 +33,7 @@
   },
   "mixins": [
     "polymorph.mixins.json",
+    "polymorph-compatibility.mixins.json",
     "polymorph.fabric.mixins.json",
     "polymorph-compatibility.fabric.mixins.json"
   ],

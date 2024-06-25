@@ -10,6 +10,7 @@ plugins {
 
 mixin {
     config("${mod_id}.mixins.json")
+    config("${mod_id}-compatibility.mixins.json")
 }
 
 minecraft {
@@ -68,6 +69,8 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     // Hack fix for now, force jopt-simple to be exactly 5.0.4 because Mojang ships that version, but some transtive dependencies request 6.0+
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
+    compileOnly "dev.emi:emi-xplat-mojmap:${emi_version}"
+    compileOnly "mezz.jei:jei-1.21-common:${jei_version}"
 }
 
 sourceSets.each {
@@ -79,7 +82,7 @@ sourceSets.each {
 jar {
     manifest {
         attributes([
-                "MixinConfigs": "${mod_id}.mixins.json"
+                "MixinConfigs": "${mod_id}.mixins.json, ${mod_id}-compatibility.mixins.json"
         ])
     }
 }

@@ -120,6 +120,9 @@ public class PolymorphIntegrations {
   }
 
   public enum Mod {
+    REI("roughlyenoughitems", true, Loader.FABRIC, Loader.NEOFORGE),
+    JEI("jei", true, Loader.FABRIC, Loader.FORGE, Loader.NEOFORGE),
+    EMI("emi", true, Loader.FABRIC, Loader.NEOFORGE),
     QUICKBENCH("quickbench", true, Loader.FABRIC),
     FASTFURNACE("fastfurnace", true, Loader.NEOFORGE),
     FASTWORKBENCH("fastbench", true, Loader.NEOFORGE),

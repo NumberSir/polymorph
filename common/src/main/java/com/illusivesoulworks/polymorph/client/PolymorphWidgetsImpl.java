@@ -53,6 +53,25 @@ public class PolymorphWidgetsImpl extends PolymorphWidgets {
   }
 
   @Override
+  public IRecipesWidget getCurrentWidget() {
+    return RecipesWidget.get().orElse(null);
+  }
+
+  @Override
+  public IRecipesWidget getWidgetOrDefault(AbstractContainerScreen<?> containerScreen) {
+    IRecipesWidget widget = this.getWidget(containerScreen);
+
+    if (widget == null) {
+      Slot slot = this.findResultSlot(containerScreen);
+
+      if (slot != null) {
+        widget = new PlayerRecipesWidget(containerScreen, slot);
+      }
+    }
+    return widget;
+  }
+
+  @Override
   public IRecipesWidget getWidget(AbstractContainerScreen<?> pContainerScreen) {
 
     for (IRecipesWidgetFactory factory : this.widgetFactories) {

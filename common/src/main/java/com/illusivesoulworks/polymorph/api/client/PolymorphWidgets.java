@@ -16,6 +16,10 @@ public abstract class PolymorphWidgets {
     return instance;
   }
 
+  public abstract IRecipesWidget getCurrentWidget();
+
+  public abstract IRecipesWidget getWidgetOrDefault(AbstractContainerScreen<?> containerScreen);
+
   public abstract IRecipesWidget getWidget(AbstractContainerScreen<?> containerScreen);
 
   public abstract void registerWidget(IRecipesWidgetFactory factory);
