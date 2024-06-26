@@ -75,12 +75,12 @@ public class FabricPlatform implements IPlatform {
 
   @Override
   public IPlayerRecipeData getRecipeData(Player player) {
-    return PolymorphFabricComponents.PLAYER_RECIPE_DATA.get(player);
+    return PolymorphFabricComponents.PLAYER_RECIPE_DATA.getNullable(player);
   }
 
   @Override
   public IBlockEntityRecipeData getRecipeData(BlockEntity blockEntity) {
-    return PolymorphFabricComponents.BLOCK_ENTITY_RECIPE_DATA.get(blockEntity);
+    return PolymorphFabricComponents.BLOCK_ENTITY_RECIPE_DATA.getNullable(blockEntity);
   }
 
   @Override
