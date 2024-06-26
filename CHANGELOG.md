@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 Prior to version 0.45.0, this project used MCVERSION-MAJORMOD.MAJORAPI.MINOR.PATCH.
 
+## [1.0.1+1.21] - 2024.06.26
+### Fixed
+- [Fabric] Fixed crash when accessing block entities
+
 ## [1.0.0+1.21] - 2024.06.25
 ### Added
 - Added support for the Crafter block
