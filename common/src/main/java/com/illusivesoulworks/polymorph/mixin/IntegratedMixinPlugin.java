@@ -89,10 +89,10 @@ public class IntegratedMixinPlugin implements IMixinConfigPlugin, IMixinErrorHan
   @Override
   public ErrorAction onApplyError(String targetClassName, Throwable th, IMixinInfo mixin,
                                   ErrorAction action) {
-    String pack = mixin.getConfig().getMixinPackage();
+    String pack = mixin.getClassName();
 
     if (pack.startsWith(PREFIX)) {
-      String modId = pack.substring(PREFIX.length());
+      String modId = pack.substring(PREFIX.length(), pack.lastIndexOf('.'));
       PolymorphIntegrations.disable(modId);
       PolymorphConstants.LOG.error("Polymorph encountered an error while transforming: {}",
           targetClassName);

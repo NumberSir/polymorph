@@ -6,6 +6,7 @@ import dev.emi.emi.api.recipe.handler.EmiCraftContext;
 import dev.emi.emi.registry.EmiRecipeFiller;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,6 +25,10 @@ public class MixinEmiRecipeFiller {
                                                                               EmiCraftContext.Destination destination,
                                                                               int amount,
                                                                               CallbackInfoReturnable<Boolean> cir) {
-    RecipeTransfer.selectRecipe(recipe.getBackingRecipe());
+    RecipeHolder<?> recipeHolder = recipe.getBackingRecipe();
+
+    if (recipeHolder != null) {
+      RecipeTransfer.selectRecipe(recipeHolder);
+    }
   }
 }

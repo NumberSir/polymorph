@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -70,13 +71,24 @@ public class PlayerRecipeData extends AbstractRecipeData<Player> implements
 
     if (this.getOwner().tickCount != this.lastAccessTick) {
       this.lastAccessTick = this.getOwner().tickCount;
-      this.cachedSelection = result;
+
+      // Prevent caching selections coming from outside the main thread, this is usually not desired
+      // and can lead to race conditions
+      if (validateThread(level)) {
+        this.cachedSelection = result;
+      }
     }
     return result;
   }
 
+  private boolean validateThread(Level level) {
+    MinecraftServer server = level.getServer();
+    return server != null && server.getRunningThread() == Thread.currentThread();
+  }
+
   @Override
   public void selectRecipe(@Nonnull RecipeHolder<?> recipe) {
+    this.cachedSelection = null;
     super.selectRecipe(recipe);
     this.syncPlayerRecipeData();
   }

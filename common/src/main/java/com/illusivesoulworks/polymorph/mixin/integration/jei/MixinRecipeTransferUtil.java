@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = RecipeTransferUtil.class, remap = false)
+@Mixin(value = RecipeTransferUtil.class)
 public class MixinRecipeTransferUtil {
 
   @Inject(
@@ -26,7 +26,7 @@ public class MixinRecipeTransferUtil {
                                                CallbackInfoReturnable<Boolean> cir) {
 
     if (recipeLayout.getRecipe() instanceof RecipeHolder<?> recipeHolder) {
-      RecipeTransfer.selectRecipe(recipeHolder);
+      RecipeTransfer.enqueueTransfer(recipeHolder.id());
     }
   }
 }

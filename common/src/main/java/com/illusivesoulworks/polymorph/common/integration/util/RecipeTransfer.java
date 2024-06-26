@@ -7,6 +7,16 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class RecipeTransfer {
 
+  private static ResourceLocation transfer = null;
+
+  public static void enqueueTransfer(ResourceLocation resourceLocation) {
+    transfer = resourceLocation;
+  }
+
+  public static ResourceLocation getTransfer() {
+    return transfer;
+  }
+
   public static void selectRecipe(RecipeHolder<?> recipe) {
     selectRecipe(recipe.id());
   }

@@ -81,7 +81,7 @@ public class CommonEventsListener {
   @SubscribeEvent
   public void attachCapabilities(final AttachCapabilitiesEvent<BlockEntity> evt) {
     BlockEntity be = evt.getObject();
-    IBlockEntityRecipeData recipeData = PolymorphApi.getInstance().getBlockEntityRecipeData(be);
+    IBlockEntityRecipeData recipeData = PolymorphApi.getInstance().createBlockEntityRecipeData(be);
 
     if (recipeData != null) {
       LazyOptional<IBlockEntityRecipeData> cap = LazyOptional.of(() -> recipeData);

@@ -75,10 +75,10 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
     SortedSet<IRecipePair> recipesList = new TreeSet<>();
     RegistryAccess registryAccess = level.registryAccess();
 
-    if (this.loadedRecipe != null) {
+    if (this.loadedRecipe != null && this.getSelectedRecipe() == null) {
       level.getRecipeManager().byKey(this.loadedRecipe).ifPresent(this::setSelectedRecipe);
-      this.loadedRecipe = null;
     }
+    this.loadedRecipe = null;
     RecipeHolder<T> firstResult = null;
     RecipeHolder<T> selected = null;
 

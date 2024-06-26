@@ -22,8 +22,8 @@ import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
 import com.illusivesoulworks.polymorph.common.network.client.CPacketBlockEntityListener;
 import com.illusivesoulworks.polymorph.common.network.client.CPacketPersistentRecipeSelection;
 import com.illusivesoulworks.polymorph.common.network.client.CPacketPlayerRecipeSelection;
-import com.illusivesoulworks.polymorph.common.network.server.SPacketHighlightRecipe;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketPlayerRecipeSync;
+import com.illusivesoulworks.polymorph.common.network.server.SPacketRecipeHandshake;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketRecipesList;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketUpdatePreview;
 import java.util.HashSet;
@@ -86,6 +86,11 @@ public class PolymorphNeoForgePacketDistributor implements IPolymorphNetwork {
 
   @Override
   public void sendUpdatePreviewS2C(ServerPlayer player) {
-    PacketDistributor.sendToPlayer(player, new SPacketUpdatePreview());
+    PacketDistributor.sendToPlayer(player, SPacketUpdatePreview.INSTANCE);
+  }
+
+  @Override
+  public void sendRecipeHandshakeS2C(ServerPlayer player) {
+    PacketDistributor.sendToPlayer(player, SPacketRecipeHandshake.INSTANCE);
   }
 }
