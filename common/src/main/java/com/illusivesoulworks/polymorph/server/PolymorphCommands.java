@@ -78,8 +78,8 @@ public class PolymorphCommands {
 
       if (count > 0) {
         try {
-          Files.write(Paths.get(Services.PLATFORM.getGameDir() + "/logs/conflicts.log"), output,
-              StandardCharsets.UTF_8);
+          Files.write(Paths.get(Services.PLATFORM.getGameDir() + "/logs/polymorph-conflicts.log"),
+              output, StandardCharsets.UTF_8);
         } catch (IOException e) {
           PolymorphConstants.LOG.error(
               "Whoops! Something went wrong writing down your conflicts :(");
