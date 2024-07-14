@@ -2,6 +2,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 This is a copy of the changelog for the most recent version. For the full version history, go [here](https://github.com/illusivesoulworks/polymorph/blob/1.21.x/CHANGELOG.md).
 
-## [1.0.2+1.21] - 2024.06.27
+## [1.0.3+1.21] - 2024.07.13
 ### Fixed
-- Fixed incorrect recipe caching for crafting recipes [#273](https://github.com/illusivesoulworks/polymorph/issues/273)
+- Fixed crash with NeoForge 21.0.67+ [#275](https://github.com/illusivesoulworks/polymorph/issues/275)
