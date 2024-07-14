@@ -26,11 +26,11 @@ import com.illusivesoulworks.polymorph.platform.services.IPlatform;
 import java.nio.file.Path;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
-import net.neoforged.neoforge.common.crafting.IShapedRecipe;
 
 public class NeoForgePlatform implements IPlatform {
 
@@ -59,15 +59,15 @@ public class NeoForgePlatform implements IPlatform {
 
   @Override
   public boolean isShaped(Recipe<?> recipe) {
-    return recipe instanceof IShapedRecipe<?>;
+    return recipe instanceof ShapedRecipe;
   }
 
   @Override
   public boolean isSameShape(Recipe<?> recipe1, Recipe<?> recipe2) {
 
     if (isShaped(recipe1) && isShaped(recipe2)) {
-      IShapedRecipe<?> shaped = (IShapedRecipe<?>) recipe1;
-      IShapedRecipe<?> otherShaped = (IShapedRecipe<?>) recipe2;
+      ShapedRecipe shaped = (ShapedRecipe) recipe1;
+      ShapedRecipe otherShaped = (ShapedRecipe) recipe2;
       return shaped.getHeight() == otherShaped.getHeight() &&
           shaped.getWidth() == otherShaped.getWidth();
     }
