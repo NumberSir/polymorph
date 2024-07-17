@@ -19,9 +19,10 @@ package com.illusivesoulworks.polymorph.common.network.server;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
 import com.illusivesoulworks.polymorph.api.client.base.IRecipesWidget;
+import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
 import com.illusivesoulworks.polymorph.client.recipe.RecipesWidget;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import net.minecraft.client.Minecraft;
@@ -34,7 +35,7 @@ public class ClientPacketHandler {
 
     if (clientPlayerEntity != null) {
       PolymorphApi.common().getRecipeData(clientPlayerEntity).ifPresent(recipeData -> {
-        recipeData.setRecipesList(packet.recipeList().orElse(new TreeSet<>()));
+        recipeData.setRecipesList(sort(packet.recipeList().orElse(new HashSet<>())));
         packet.selected().flatMap(resourceLocation -> clientPlayerEntity.level().getRecipeManager()
             .byKey(resourceLocation)).ifPresent(recipeData::setSelectedRecipe);
       });
@@ -47,11 +48,11 @@ public class ClientPacketHandler {
     if (clientPlayerEntity != null) {
       Optional<IRecipesWidget> maybeWidget = RecipesWidget.get();
       maybeWidget.ifPresent(
-          widget -> widget.setRecipesList(packet.recipeList().orElse(new TreeSet<>()),
+          widget -> widget.setRecipesList(sort(packet.recipeList().orElse(new HashSet<>())),
               packet.selected().orElse(null)));
 
       if (maybeWidget.isEmpty()) {
-        RecipesWidget.enqueueRecipesList(packet.recipeList().orElse(new TreeSet<>()),
+        RecipesWidget.enqueueRecipesList(sort(packet.recipeList().orElse(new HashSet<>())),
             packet.selected().orElse(null));
       }
     }
@@ -63,5 +64,9 @@ public class ClientPacketHandler {
     if (clientPlayerEntity != null) {
       RecipesWidget.get().ifPresent(widget -> widget.highlightRecipe(packet.recipe()));
     }
+  }
+
+  private static SortedSet<IRecipePair> sort(HashSet<IRecipePair> set) {
+    return new TreeSet<>(set);
   }
 }
