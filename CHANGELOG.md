@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 Prior to version 0.45.0, this project used MCVERSION-MAJORMOD.MAJORAPI.MINOR.PATCH.
 
+## [1.0.4+1.21] - 2024.07.16
+### Changed
+- Optimized recipe fetching [#277](https://github.com/illusivesoulworks/polymorph/issues/277)
+- Widgets will now only show a maximum of 15 recipe conflicts at once
+- Updated `zh_tw` localization [#276](https://github.com/illusivesoulworks/polymorph/pull/276)
+
 ## [1.0.3+1.21] - 2024.07.13
 ### Fixed
 - Fixed crash with NeoForge 21.0.67+ [#275](https://github.com/illusivesoulworks/polymorph/issues/275)
