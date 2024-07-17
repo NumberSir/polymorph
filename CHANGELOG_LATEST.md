@@ -2,7 +2,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 This is a copy of the changelog for the most recent version. For the full version history, go [here](https://github.com/illusivesoulworks/polymorph/blob/1.20.6/CHANGELOG.md).
 
-## [0.52.2+1.20.6] - 2024.06.20
-### Added
-- Added `tr_tr` localization [#268](https://github.com/illusivesoulworks/polymorph/pull/268)
-- Added `es_mx` localization [#271](https://github.com/illusivesoulworks/polymorph/pull/271)
+## [0.52.3+1.20.6] - 2024.07.16
+### Fixed
+- Fixed networking crash [#274](https://github.com/illusivesoulworks/polymorph/issues/274)
