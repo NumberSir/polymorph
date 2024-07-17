@@ -25,8 +25,10 @@ import com.mojang.datafixers.util.Pair;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -72,7 +74,6 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
       this.updateRecipesList(new TreeSet<>());
       return null;
     }
-    SortedSet<IRecipePair> recipesList = new TreeSet<>();
     RegistryAccess registryAccess = level.registryAccess();
 
     if (this.loadedRecipe != null && this.getSelectedRecipe() == null) {
@@ -81,6 +82,7 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
     this.loadedRecipe = null;
     RecipeHolder<T> firstResult = null;
     RecipeHolder<T> selected = null;
+    SortedSet<IRecipePair> recipesList = new TreeSet<>();
 
     for (RecipeHolder<T> entry : recipes) {
       T recipe = entry.value();
@@ -99,12 +101,17 @@ public abstract class AbstractRecipeData<E> implements IRecipeData<E> {
       if (firstResult == null) {
         firstResult = entry;
       }
+      boolean flag = false;
 
       if (selected == null && this.getSelectedRecipe() != null &&
           this.getSelectedRecipe().id().equals(id)) {
         selected = entry;
+        flag = true;
       }
-      recipesList.add(new RecipePair(id, output));
+
+      if (recipesList.size() < 15 || flag) {
+        recipesList.add(new RecipePair(id, output));
+      }
     }
 
     if (selected == null) {

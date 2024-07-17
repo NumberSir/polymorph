@@ -18,8 +18,10 @@
 package com.illusivesoulworks.polymorph.common.util;
 
 import com.illusivesoulworks.polymorph.api.common.base.IRecipePair;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -57,11 +59,13 @@ public record RecipePair(ResourceLocation resourceLocation,
       int diff = output1.getCount() - output2.getCount();
 
       if (diff == 0) {
-        String tag1 = output1.getComponents().stream().map(TypedDataComponent::toString)
-            .collect(Collectors.joining());
-        String tag2 = output2.getComponents().stream().map(TypedDataComponent::toString)
-            .collect(Collectors.joining());
-        return tag1.compareTo(tag2);
+        DataComponentMap components1 = output1.getComponents();
+        DataComponentMap components2 = output2.getComponents();
+
+        if (Objects.equals(components1, components2)) {
+          return 0;
+        }
+        return components1.hashCode() - components2.hashCode();
       } else {
         return diff;
       }
