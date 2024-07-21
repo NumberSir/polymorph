@@ -2,8 +2,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 This is a copy of the changelog for the most recent version. For the full version history, go [here](https://github.com/illusivesoulworks/polymorph/blob/1.21.x/CHANGELOG.md).
 
-## [1.0.4+1.21] - 2024.07.16
-### Changed
-- Optimized recipe fetching [#277](https://github.com/illusivesoulworks/polymorph/issues/277)
-- Widgets will now only show a maximum of 15 recipe conflicts at once
-- Updated `zh_tw` localization [#276](https://github.com/illusivesoulworks/polymorph/pull/276)
+## [1.0.5+1.21] - 2024.07.20
+### Added
+- Re-enabled FastWorkbench compatibility [#278](https://github.com/illusivesoulworks/polymorph/issues/278)
