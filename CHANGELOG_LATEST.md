@@ -2,6 +2,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 This is a copy of the changelog for the most recent version. For the full version history, go [here](https://github.com/illusivesoulworks/polymorph/blob/1.20.x/CHANGELOG.md).
 
-## [0.49.5+1.20.1] - 2024.05.25
+## [0.49.6+1.20.1] - 2024.09.13
 ### Fixed
-- Fixed class-loading errors with certain mixins [#265](https://github.com/illusivesoulworks/polymorph/issues/265)
+- [Fabric/Quilt] Fixed log errors from NightConfig [#281](https://github.com/illusivesoulworks/polymorph/issues/281)
