@@ -20,6 +20,7 @@ package com.illusivesoulworks.polymorph.common.integration;
 import com.electronwill.nightconfig.core.ConfigSpec;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.google.common.collect.ImmutableSet;
+import com.illusivesoulworks.polymorph.PolymorphConstants;
 import com.illusivesoulworks.polymorph.platform.Services;
 import java.util.Arrays;
 import java.util.Collections;
@@ -61,8 +62,13 @@ public class PolymorphIntegrations {
     config.setComment(mods.get(0).getId(),
         " Please be aware that enabling any third-party mod integration introduces instability and performance overheads, caution is strongly advised.\n If crashes or issues arise, disable the related modules as the first step in troubleshooting and report the issue to Polymorph.");
 
-    if (!spec.isCorrect(config)) {
-      spec.correct(config);
+    try {
+
+      if (!spec.isCorrect(config)) {
+        spec.correct(config);
+      }
+    } catch (UnsupportedOperationException e) {
+      PolymorphConstants.LOG.error("Polymorph failed to correct integration configuration spec");
     }
 
     for (Mod mod : Mod.values()) {
